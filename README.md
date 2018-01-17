@@ -1,2 +1,1 @@
 # simply-cure
-# simply-cure
