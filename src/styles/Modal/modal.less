@@ -1,0 +1,57 @@
+.fl-modal-wrapper {
+  overflow: hidden;
+}
+
+.fl-modal {
+  top: 60px;
+  transform-origin: 50% 50% !important;
+  .ant-modal-content {
+    border-radius: 0;
+  }
+  .ant-modal-header {
+    border-bottom: none;
+    padding: 36px 36px 16px;
+    .ant-modal-title {
+      font-weight: 400;
+      font-size: 20px;
+    }
+  }
+  .ant-modal-body {
+    padding: 16px 36px;
+    height: 420px;
+    max-height: 80%;
+    overflow: auto;
+    .ant-form-item-control:not(.has-error) {
+      .ant-input {
+        &:focus,
+        &:hover {
+          border-color: #a0a0a0;
+          box-shadow: none;
+        }
+      }
+    }
+    .ant-form-item {
+      margin-bottom: 12px;
+    }
+    .ant-form-item-required {
+      &::before {
+        display: none;
+      }
+      &::after {
+        content: "*";
+        margin-left: 4px;
+        line-height: 1;
+        font-size: 14px;
+        color: red;
+      }
+    }
+    .ant-form-item-label {
+      font-size: 12px;
+      label {
+        color: #7c8194;
+      }
+      font-weight: 700;
+      line-height: 20px;
+    }
+  }
+}

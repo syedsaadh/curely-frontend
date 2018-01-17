@@ -1,0 +1,57 @@
+// MIXINS
+.transitionMix
+  (@time: 0.3s, @prop: all, @tran: cubic-bezier(0.215, 0.61, 0.355, 1)) {
+  -webkit-transition: @prop @time @tran;
+  -moz-transition: @prop @time @tran;
+  -ms-transition: @prop @time @tran;
+  -o-transition: @prop @time @tran;
+  transition: @prop @time @tran;
+}
+.font-size(@fontSize: 14) {
+  font-size: @fontSize+0px;
+  font-size: (@fontSize/10)+0rem;
+}
+.line-height(@leadingSize: 14) {
+  line-height: @leadingSize+0px;
+  line-height: (@leadingSize/10)+0rem;
+}
+.letter-spacing(@kerningSize: 0) {
+  letter-spacing: @kerningSize+0px;
+  letter-spacing: (@kerningSize/10)+0rem;
+}
+.font(@fontSize, @leadingSize, @kerningSize) {
+  font-size: @fontSize+0px;
+  font-size: (@fontSize/10)+0rem;
+  line-height: @leadingSize+0px;
+  line-height: (@leadingSize/10)+0rem;
+  letter-spacing: @kerningSize+0px;
+  letter-spacing: (@kerningSize/10)+0rem;
+}
+// Margin mixin - enter pixel values in order: margin-top, margin-right, margin-bottom, margin-left
+// Usage: .mar(10, 30, 15, 20);
+.mar(@mt: 0; @mr: 0; @mb: 0; @ml: 0;) {
+  @mtv: @mt / @font-size;
+  @mrv: @mr / @font-size;
+  @mbv: @mb / @font-size;
+  @mlv: @ml / @font-size;
+  margin: ~"@{mt}px" ~"@{mr}px" ~"@{mb}px" ~"@{ml}px";
+  margin: ~"@{mtv}rem" ~"@{mrv}rem" ~"@{mbv}rem" ~"@{mlv}rem";
+}
+
+// Padding mixin - enter pixel values in order: padding-top, padding-right, padding-bottom, padding-left
+// Usage: .pad(5, 10, 5, 10);
+.pad(@pt: 0; @pr: 0; @pb: 0; @pl: 0;) {
+  @ptv: @pt / @font-size;
+  @prv: @pr / @font-size;
+  @pbv: @pb / @font-size;
+  @plv: @pl / @font-size;
+  padding: ~"@{pt}px" ~"@{pr}px" ~"@{pb}px" ~"@{pl}px";
+  padding: ~"@{ptv}rem" ~"@{prv}rem" ~"@{pbv}rem" ~"@{plv}rem";
+}
+// BORDER RADIUS
+.isoBorderRadius (@radius : 5px 5px 5px 5px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  -o-border-radius: @radius;
+  border-radius: @radius;
+}
