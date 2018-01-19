@@ -1,5 +1,5 @@
 {
-  "name": "jalebi",
+  "name": "curelyfrontent",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -57,6 +57,7 @@
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "build-css": "node-sass-chokidar src/styles -o src/styles",
-    "watch-css": "npm run build-css && node-sass-chokidar src/styles -o src/styles --watch --recursive"
+    "watch-css":
+      "npm run build-css && node-sass-chokidar src/styles -o src/styles --watch --recursive"
   }
 }

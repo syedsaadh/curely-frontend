@@ -1,1 +1,1 @@
-# simply-cure
+# Curely FrontEnd
