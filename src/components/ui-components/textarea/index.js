@@ -6,13 +6,12 @@ const FormItem = Form.Item;
 type Props = {
   name: string,
   className: string,
-  type?: string,
   label: string,
+  rows?: number,
   required?: boolean,
   getFieldDecorator?: Function,
   disabled?: boolean,
   placeholder: string,
-  size?: 'small' | 'middle' | 'large',
   rules: any,
   validatorMessage?: string,
   onPressEnter?: Function,
@@ -23,12 +22,11 @@ function CustomInput(props: Props) {
     required,
     getFieldDecorator,
     label,
+    rows,
     name,
-    type,
     disabled,
     className,
     placeholder,
-    size,
     rules,
     validatorMessage,
     onPressEnter,
@@ -45,11 +43,10 @@ function CustomInput(props: Props) {
       {!getFieldDecorator ||
         getFieldDecorator(name, {
           rules: crules,
-        })(<Input
-          size={size}
+        })(<Input.TextArea
+          rows={rows}
           placeholder={placeholder}
           className={className}
-          type={type}
           disabled={disabled}
           onPressEnter={onPressEnter}
         />)}
@@ -57,10 +54,9 @@ function CustomInput(props: Props) {
   );
 }
 CustomInput.defaultProps = {
-  size: 'default',
+  rows: 2,
   onPressEnter: null,
   required: false,
-  type: 'text',
   getFieldDecorator: null,
   disabled: false,
   validatorMessage: 'This field is required',

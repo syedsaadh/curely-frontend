@@ -18,6 +18,8 @@ type Props = {
   disabled?: boolean,
   validatorMessage?: string,
   placeholder?: string,
+  defaultValue?: string,
+  onSelect?: Function,
 };
 
 function CustomInput(props: Props) {
@@ -31,6 +33,8 @@ function CustomInput(props: Props) {
     validatorMessage,
     values,
     placeholder,
+    defaultValue,
+    onSelect,
   } = props;
   const crules = [{ required, message: validatorMessage }];
   return (
@@ -38,7 +42,8 @@ function CustomInput(props: Props) {
       {!getFieldDecorator ||
         getFieldDecorator(name, {
           rules: crules,
-        })(<Select placeholder={placeholder} style={{width: '100%'}}>
+          initialValue: defaultValue,
+        })(<Select onSelect={onSelect} placeholder={placeholder} style={{ width: '100%' }}>
           {values.map((item, index) => (
             <Option key={index} value={item.value}>
               {item.label}
