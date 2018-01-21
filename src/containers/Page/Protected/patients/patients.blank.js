@@ -1,8 +1,9 @@
 import React from 'react';
 
 class PatientsBlankPage extends React.Component {
+  state = {};
   render() {
-    return <h1>Hello</h1>;
+    return <h1 />;
   }
 }
 

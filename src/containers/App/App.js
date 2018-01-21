@@ -34,7 +34,7 @@ export function AppContainer(props: Props) {
             }
           />
         </Debounce>
-        <Sidebar collapsed={props.app.collapsed} onCollapse={() => props.toggleCollapsed()} />
+        <Sidebar />
         <div className="main-container">
           <Topbar />
           <div className="content-wrapper">
