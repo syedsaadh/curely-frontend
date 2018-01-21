@@ -6,6 +6,10 @@ class DepartmentService {
     const request = getRequest(_config.baseUrl, '/admin/departments/all', true);
     return fetch(request);
   }
+  static getDepartmentWithDoctors() {
+    const request = getRequest(_config.baseUrl, '/admin/departments/all?with=doctor', true);
+    return fetch(request);
+  }
   static addDepartment(data) {
     const request = postRequest(_config.baseUrl, '/admin/departments/create', data);
     return fetch(request);

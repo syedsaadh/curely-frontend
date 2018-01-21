@@ -7,6 +7,10 @@ export const actions = {
   DEPARTMENT_FETCH_ALL_SUCCESS: 'DEPARTMENT_FETCH_ALL_SUCCESS',
   DEPARTMENT_FETCH_ALL_FAILED: 'DEPARTMENT_FETCH_ALL_FAILED',
 
+  DEPARTMENT_WITH_DOCTORS_FETCH_REQUEST: 'DEPARTMENT_WITH_DOCTORS_FETCH_REQUEST',
+  DEPARTMENT_WITH_DOCTORS_FETCH_SUCCESS: 'DEPARTMENT_WITH_DOCTORS_FETCH_SUCCESS',
+  DEPARTMENT_WITH_DOCTORS_FETCH_FAILED: 'DEPARTMENT_WITH_DOCTORS_FETCH_FAILED',
+
   DEPARTMENT_ADD_REQUEST: 'DEPARTMENT_ADD_REQUEST',
   DEPARTMENT_ADD_SUCCESS: 'DEPARTMENT_ADD_SUCCESS',
   DEPARTMENT_ADD_FAILED: 'DEPARTMENT_ADD_FAILED',
@@ -32,6 +36,18 @@ export const fetchAllSuccess = data => ({
 });
 export const fetchAllFailed = error => ({
   type: actions.DEPARTMENT_FETCH_ALL_FAILED,
+  payload: error,
+});
+
+export const withDoctorsFetchRequest = () => ({
+  type: actions.DEPARTMENT_WITH_DOCTORS_FETCH_REQUEST,
+});
+export const withDoctorsFetchSuccess = data => ({
+  type: actions.DEPARTMENT_WITH_DOCTORS_FETCH_SUCCESS,
+  payload: data,
+});
+export const withDoctorsFetchFailed = error => ({
+  type: actions.DEPARTMENT_WITH_DOCTORS_FETCH_FAILED,
   payload: error,
 });
 
@@ -91,6 +107,19 @@ export const fetchAll = () => (dispatch) => {
     })
     .catch((error) => {
       dispatch(fetchAllFailed(error));
+    });
+};
+export const fetchWithDoctor = () => (dispatch) => {
+  dispatch(withDoctorsFetchRequest());
+  service
+    .getDepartmentWithDoctors()
+    .then(checkStatus)
+    .then(checkResponseCode)
+    .then((response) => {
+      dispatch(withDoctorsFetchSuccess(response.Payload));
+    })
+    .catch((error) => {
+      dispatch(withDoctorsFetchFailed(error));
     });
 };
 

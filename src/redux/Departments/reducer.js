@@ -24,16 +24,19 @@ export default function reducer(state: State = initState, action: Action) {
     case types.DEPARTMENT_ADD_REQUEST:
     case types.DEPARTMENT_EDIT_REQUEST:
     case types.DEPARTMENT_FETCH_ALL_REQUEST:
+    case types.DEPARTMENT_WITH_DOCTORS_FETCH_REQUEST:
     case types.DEPARTMENT_DELETE_REQUEST: {
       return { ...state, isFetching: true, error: null };
     }
     case types.DEPARTMENT_ADD_FAILED:
     case types.DEPARTMENT_EDIT_FAILED:
     case types.DEPARTMENT_FETCH_ALL_FAILED:
+    case types.DEPARTMENT_WITH_DOCTORS_FETCH_FAILED:
     case types.DEPARTMENT_DELETE_FAILED: {
       return { ...state, isFetching: false, error: action.payload };
     }
-    case types.DEPARTMENT_FETCH_ALL_SUCCESS: {
+    case types.DEPARTMENT_FETCH_ALL_SUCCESS:
+    case types.DEPARTMENT_WITH_DOCTORS_FETCH_SUCCESS: {
       return {
         ...state,
         isFetching: false,
