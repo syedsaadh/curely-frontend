@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import { Button, DatePicker, Radio } from 'antd';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
+import { openModal } from '../../../../redux/App/actions';
+import { fetchWithDoctor } from '../../../../redux/Departments/actions';
+
 import './style.less';
 
 const RadioButton = Radio.Button;
@@ -25,44 +28,46 @@ class CalendarPage extends React.Component {
   componentWillMount() {
     this.updateTimes(this.state.current_date, this.state.current_view);
   }
-  changeCalendarView = (type) => {
-    this.toolbar.onViewChange(type);
-  };
+
+  componentDidMount() {
+    this.props.fetchWithDoctor();
+  }
+
   onView = (view) => {
     this.setState({
       current_view: view,
     });
     this.updateTimes(this.state.current_date, view);
   };
+  onSelectSlot = (slotInfo) => {
+    this.props.openModal('AppointmentAdd', {
+      startDateTime: slotInfo.start,
+      endDateTime: slotInfo.end,
+    });
+  };
   onNavigate = (date, view) => {
-    const new_date = moment(date);
+    const newDate = moment(date);
     this.setState({
-      current_date: new_date,
+      current_date: newDate,
     });
 
-    this.updateTimes(new_date, view);
+    this.updateTimes(newDate, view);
   };
-  renderToolbar = (toolbar) => {
-    console.log(toolbar);
-    this.toolbar = toolbar;
-    return null;
-  };
+
   updateTimes(date = this.state.current_date, view = this.state.current_view) {
-    let start,
-      label,
-      end;
+    let start;
+    let label;
+    let end;
     // if view is day: from moment(date).startOf('day') to moment(date).endOf('day');
     if (view === 'day') {
       start = moment(date).startOf('day');
       end = moment(date).endOf('day');
       label = start.format('ddd MMM DD');
     } else if (view === 'week') {
-      // if view is week: from moment(date).startOf('isoWeek') to moment(date).endOf('isoWeek');
       start = moment(date).startOf('isoWeek');
       end = moment(date).endOf('isoWeek');
       label = `${start.format('DD MMM YY')} - ${end.format('DD MMM YY')}`;
     } else if (view === 'month') {
-      // if view is month: from moment(date).startOf('month').subtract(7, 'days') to moment(date).endOf('month').add(7, 'days'); i do additional 7 days math because you can see adjacent weeks on month view (that is the way how i generate my recurrent events for the Big Calendar, but if you need only start-end of month - just remove that math);
       start = moment(date)
         .startOf('month')
         .subtract(7, 'days');
@@ -71,7 +76,6 @@ class CalendarPage extends React.Component {
         .add(7, 'days');
       label = `${moment(date).format('MMM YY')}`;
     } else if (view === 'agenda') {
-      // if view is agenda: from moment(date).startOf('day') to moment(date).endOf('day').add(1, 'month');
       start = moment(date).startOf('day');
       end = moment(date)
         .endOf('day')
@@ -81,8 +85,16 @@ class CalendarPage extends React.Component {
     this.setState({
       toolbar_label: label,
     });
-    console.log(start.date(), end.date());
   }
+
+  changeCalendarView = (type) => {
+    this.toolbar.onViewChange(type);
+  };
+  renderToolbar = (toolbar) => {
+    this.toolbar = toolbar;
+    return null;
+  };
+
   render() {
     const { current_view, toolbar_label } = this.state;
     return (
@@ -99,13 +111,6 @@ class CalendarPage extends React.Component {
               >
                 <i className="ion-chevron-left" />
               </span>
-              {/* <DatePicker
-                className="calendar-date-range-picker"
-                format="DD MMM YY"
-                defaultValue={moment()}
-                allowClear={false}
-                onChange={date => this.toolbar.onNavigate(null, date.toDate())}
-              /> */}
               <span>{toolbar_label}</span>
               <span
                 style={{ cursor: 'pointer', paddingLeft: 16 }}
@@ -148,11 +153,7 @@ class CalendarPage extends React.Component {
               onView={this.onView}
               defaultDate={new Date()}
               onSelectEvent={event => alert(event.title)}
-              onSelectSlot={slotInfo =>
-                alert(`selected slot: \n\nstart ${slotInfo.start.toLocaleString()} ` +
-                    `\nend: ${slotInfo.end.toLocaleString()}` +
-                    `\naction: ${slotInfo.action}`)
-              }
+              onSelectSlot={this.onSelectSlot}
               components={{
                 toolbar: this.renderToolbar,
               }}
@@ -166,6 +167,9 @@ class CalendarPage extends React.Component {
 }
 
 const mapStateToProps = state => ({});
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  openModal: (type, props) => dispatch(openModal(type, props)),
+  fetchWithDoctor: () => dispatch(fetchWithDoctor()),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(CalendarPage);

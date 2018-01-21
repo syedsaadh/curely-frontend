@@ -8,6 +8,7 @@ import PracticeStaffAdd from './practicestaff.add';
 import PracticeStaffEdit from './practicestaff.edit';
 import PatientAdd from './patient.add';
 import PatientEdit from './patient.edit';
+import AppointmentAdd from './appointment.add';
 
 export {
   DepartmentAdd,
@@ -20,4 +21,5 @@ export {
   PracticeStaffEdit,
   PatientAdd,
   PatientEdit,
+  AppointmentAdd,
 };
