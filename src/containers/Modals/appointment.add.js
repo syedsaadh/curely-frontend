@@ -1,9 +1,9 @@
 import React from 'react';
 import moment from 'moment';
-import { Row, Col, Form, Radio, DatePicker, TimePicker } from 'antd';
+import { Row, Col, Form, DatePicker, TimePicker } from 'antd';
 import { FormComponentProps } from 'antd/lib/form/Form';
 import { connect } from 'react-redux';
-import { startCase, toLower, each, filter } from 'lodash';
+import { startCase, each, filter } from 'lodash';
 import {
   Modal,
   Input,
@@ -51,7 +51,7 @@ class AppointmentModal extends React.Component<Props> {
     ];
     this.props.form.validateFields(Fields, {}, (err, values) => {
       if (!err) {
-        this.props.addStaff(values);
+        this.props.addAppointment(values);
       }
     });
   };

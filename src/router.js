@@ -30,7 +30,7 @@ const PublicRoutes = ({ history, isLoggedIn }) => (
     <div>
       {process.env.NODE_ENV === 'production' ? '' : <DevTools />}
       <Switch>
-        <Route exact path="/" component={SignInPage} />
+        <Route exact path="/" component={BrandingPage} />
         <Route exact path="/signin" component={SignInPage} />
         <RestrictedRoute path="/dashboard" component={App} isLoggedIn={isLoggedIn} />
       </Switch>

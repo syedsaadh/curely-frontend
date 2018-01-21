@@ -37,7 +37,7 @@ class SignInPage extends React.Component<Props> {
     return (
       <div className="flex-container signin-container">
         <div className="branding-section">
-          <Logo color="#fff" dots="#4990E8" />
+          <Logo type="whiteText" />
           <div className="__content">
             <h3>Welcome</h3>
             <p>

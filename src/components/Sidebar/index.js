@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Layout, Menu, Icon } from 'antd';
 import { toggleAll, toggleCollapsed } from '../../redux/App/actions';
+import Logo from '../Logo';
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -17,17 +18,15 @@ class Sidebar extends React.Component {
     const { collapsed } = this.props.app;
     return (
       <Sider
+        collapsedWidth={60}
         className="sidebar-container"
         collapsed={collapsed}
+        collapsible
         onCollapse={() => this.props.toggleCollapsed()}
       >
         <div className="sidebar-top">
           <a href="/dashboard">
-            {collapsed ? (
-              <span className="title title--collapsed">Cu</span>
-            ) : (
-              <span className="title">Curely</span>
-            )}
+            {collapsed ? <Logo height="36px" text={false} /> : <Logo height="36px" type="light" />}
           </a>
         </div>
         <Menu className="sidebar-menu" theme="dark" defaultSelectedKeys={[]} mode="inline">
