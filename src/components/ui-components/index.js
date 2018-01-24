@@ -7,4 +7,4 @@ import Select from './select';
 import SelectableList from './selectableList';
 import TextArea from './textarea';
 
-export { Divider, Modal, Input, DOBInput, RadioGroup, Select, SelectableList, TextArea };
+export { Divider, Modal, Input, RadioGroup, Select, SelectableList, TextArea, DOBInput };
