@@ -16,6 +16,9 @@ type Props = {
   rules: any,
   validatorMessage?: string,
   onPressEnter?: Function,
+  suffix?: any,
+  onValueChange: Function,
+  autoComplete?: boolean,
 };
 
 function CustomInput(props: Props) {
@@ -32,7 +35,12 @@ function CustomInput(props: Props) {
     rules,
     validatorMessage,
     onPressEnter,
+    suffix,
+    autoComplete,
+    onValueChange,
   } = props;
+  let onValChange: Function = onValueChange;
+  if (!onValChange) onValChange = () => {};
   const crules = [
     {
       required,
@@ -42,7 +50,7 @@ function CustomInput(props: Props) {
   if (rules) crules.push(rules);
   return (
     <FormItem label={label}>
-      {!getFieldDecorator ||
+      {getFieldDecorator ? (
         getFieldDecorator(name, {
           rules: crules,
         })(<Input
@@ -52,7 +60,23 @@ function CustomInput(props: Props) {
           type={type}
           disabled={disabled}
           onPressEnter={onPressEnter}
-        />)}
+          suffix={suffix}
+          autoComplete={autoComplete ? 'on' : 'off'}
+          onChange={e => onValChange(e.target.value)}
+        />)
+      ) : (
+        <Input
+          size={size}
+          placeholder={placeholder}
+          className={className}
+          type={type}
+          disabled={disabled}
+          onPressEnter={onPressEnter}
+          suffix={suffix}
+          autoComplete={autoComplete ? 'on' : 'off'}
+          onChange={e => onValChange(e.target.value)}
+        />
+      )}
     </FormItem>
   );
 }
@@ -64,5 +88,7 @@ CustomInput.defaultProps = {
   getFieldDecorator: null,
   disabled: false,
   validatorMessage: 'This field is required',
+  suffix: null,
+  autoComplete: true,
 };
 export default CustomInput;

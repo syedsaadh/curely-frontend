@@ -20,6 +20,7 @@ type Props = {
   placeholder?: string,
   defaultValue?: string,
   onSelect?: Function,
+  optionLabelProp?: string,
 };
 
 function CustomInput(props: Props) {
@@ -35,6 +36,7 @@ function CustomInput(props: Props) {
     placeholder,
     defaultValue,
     onSelect,
+    optionLabelProp,
   } = props;
   const crules = [{ required, message: validatorMessage }];
   return (
@@ -43,13 +45,19 @@ function CustomInput(props: Props) {
         getFieldDecorator(name, {
           rules: crules,
           initialValue: defaultValue,
-        })(<Select onSelect={onSelect} placeholder={placeholder} style={{ width: '100%' }}>
+        })(<Select
+          disabled={disabled}
+          onSelect={onSelect}
+          optionLabelProp={optionLabelProp}
+          placeholder={placeholder}
+          style={{ width: '100%' }}
+        >
           {values.map((item, index) => (
-            <Option key={index} value={item.value}>
+            <Option key={index} label={item.label} value={item.value}>
               {item.label}
             </Option>
             ))}
-           </Select>)}
+        </Select>)}
     </FormItem>
   );
 }
@@ -58,6 +66,7 @@ CustomInput.defaultProps = {
   required: false,
   getFieldDecorator: null,
   disabled: false,
+  optionLabelProp: 'label',
   validatorMessage: 'This field is required',
 };
 export default CustomInput;

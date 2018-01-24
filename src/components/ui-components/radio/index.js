@@ -36,7 +36,7 @@ function CustomInput(props: Props) {
       {!getFieldDecorator ||
         getFieldDecorator(name, {
           rules: crules,
-        })(<RadioGroup>
+        })(<RadioGroup disabled={disabled}>
           {values.map((item, index) => (
             <Radio key={index} value={item.value}>
               {item.label}
