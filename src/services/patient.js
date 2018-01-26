@@ -2,6 +2,10 @@ import { patient as _config } from '../config/service/index';
 import { getRequest, postRequest } from './_helper';
 
 class PatientService {
+  static searchPatient(q) {
+    const request = getRequest(_config.baseUrl, `/admin/patients/search/${q}`, true);
+    return fetch(request);
+  }
   static getAllPatient() {
     const request = getRequest(_config.baseUrl, '/admin/patients/all', true);
     return fetch(request);
