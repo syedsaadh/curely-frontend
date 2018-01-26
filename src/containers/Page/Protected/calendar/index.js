@@ -1,11 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import { Button, DatePicker, Radio } from 'antd';
+import { Button, DatePicker, Popover, Radio } from 'antd';
 import BigCalendar from 'react-big-calendar';
+import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd';
+import { each } from 'lodash';
 import moment from 'moment';
+import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import { openModal } from '../../../../redux/App/actions';
 import { fetchWithDoctor } from '../../../../redux/Departments/actions';
+import { fetchAll } from '../../../../redux/Appointments/actions';
 
 import './style.less';
 
@@ -19,14 +24,16 @@ moment.updateLocale('en-us', {
 });
 moment.locale('en-us');
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
+const DragAndDropCalendar = withDragAndDrop(BigCalendar);
 class CalendarPage extends React.Component {
   state = {
     current_date: moment(),
     current_view: 'week',
-    toolbar_label: '',
+    toolbarLabel: '',
   };
   componentWillMount() {
     this.updateTimes(this.state.current_date, this.state.current_view);
+    this.props.fetchAll();
   }
 
   componentDidMount() {
@@ -38,6 +45,12 @@ class CalendarPage extends React.Component {
       current_view: view,
     });
     this.updateTimes(this.state.current_date, view);
+  };
+  onSelectEvent = (event) => {
+    console.log(event);
+    this.props.openModal('AppointmentEdit', {
+      data: event.appointment,
+    });
   };
   onSelectSlot = (slotInfo) => {
     this.props.openModal('AppointmentAdd', {
@@ -52,6 +65,14 @@ class CalendarPage extends React.Component {
     });
 
     this.updateTimes(newDate, view);
+  };
+  moveEvent = ({ event, start, end }) => {
+    console.log(event, start, end);
+    this.props.openModal('AppointmentReschedule', {
+      data: event.appointment,
+      start,
+      end,
+    });
   };
 
   updateTimes(date = this.state.current_date, view = this.state.current_view) {
@@ -83,20 +104,35 @@ class CalendarPage extends React.Component {
       label = `${start.format('DD MMM YY')} - ${end.format('DD MMM YY')}`;
     }
     this.setState({
-      toolbar_label: label,
+      toolbarLabel: label,
     });
   }
 
   changeCalendarView = (type) => {
     this.toolbar.onViewChange(type);
   };
+  popOverContent = event => (
+    <div className="popover-event-content">
+      <Button size="small" icon="edit" onClick={() => this.onSelectEvent(event.event)} />
+    </div>
+  );
   renderToolbar = (toolbar) => {
     this.toolbar = toolbar;
     return null;
   };
 
   render() {
-    const { current_view, toolbar_label } = this.state;
+    const { current_view, toolbarLabel } = this.state;
+    const events = [];
+    const { lists } = this.props;
+    each(lists, item =>
+      events.push({
+        id: item.id,
+        title: item.patient.name,
+        start: moment(item.scheduled_from).toDate(),
+        end: moment(item.scheduled_to).toDate(),
+        appointment: item,
+      }));
     return (
       <div className="calendar-page">
         <div className="calendar-page__header">
@@ -105,19 +141,19 @@ class CalendarPage extends React.Component {
           </div>
           <div className="center">
             <div className="calendar-date-range-select">
-              <span
-                style={{ cursor: 'pointer', paddingRight: 16 }}
+              <Button
+                style={{ cursor: 'pointer', marginRight: 16 }}
                 onClick={() => this.toolbar.onNavigate('PREV')}
               >
                 <i className="ion-chevron-left" />
-              </span>
-              <span>{toolbar_label}</span>
-              <span
-                style={{ cursor: 'pointer', paddingLeft: 16 }}
+              </Button>
+              <span>{toolbarLabel}</span>
+              <Button
+                style={{ cursor: 'pointer', marginLeft: 16 }}
                 onClick={() => this.toolbar.onNavigate('NEXT')}
               >
                 <i className="ion-chevron-right" />
-              </span>
+              </Button>
             </div>
           </div>
           <div className="right">
@@ -139,10 +175,11 @@ class CalendarPage extends React.Component {
         <div className="calendar-page__body">
           <div className="__sidebar-left" />
           <div className="__calendar-wrapper">
-            <BigCalendar
+            <DragAndDropCalendar
               defaultView={current_view}
               selectable
-              events={[]}
+              onEventDrop={this.moveEvent}
+              events={events}
               step={15}
               timeslots={1}
               formats={{
@@ -152,10 +189,23 @@ class CalendarPage extends React.Component {
               onNavigate={this.onNavigate}
               onView={this.onView}
               defaultDate={new Date()}
-              onSelectEvent={event => alert(event.title)}
+              onSelectEvent={this.onSelectEvent}
               onSelectSlot={this.onSelectSlot}
               components={{
                 toolbar: this.renderToolbar,
+                week: {
+                  event: event => (
+                    <Popover
+                      openClassName="pop-open-class"
+                      overlayClassName="pop-overlay-class"
+                      content={this.popOverContent(event)}
+                      placement="right"
+                      title={event.title}
+                    >
+                      <div style={{ width: '100%', height: '100%' }}>{event.title}</div>
+                    </Popover>
+                  ),
+                },
               }}
             />
           </div>
@@ -166,10 +216,13 @@ class CalendarPage extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  ...state.Appointments,
+});
 const mapDispatchToProps = dispatch => ({
   openModal: (type, props) => dispatch(openModal(type, props)),
   fetchWithDoctor: () => dispatch(fetchWithDoctor()),
+  fetchAll: () => dispatch(fetchAll()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CalendarPage);
+export default DragDropContext(HTML5Backend)(connect(mapStateToProps, mapDispatchToProps)(CalendarPage));

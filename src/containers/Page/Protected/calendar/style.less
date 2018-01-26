@@ -1,30 +1,31 @@
 @import "../../../../styles/base.less";
+@import "~react-big-calendar/lib/addons/dragAndDrop/styles.less";
 .calendar-page {
-    background: white;
-    .calendar-page__header {
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 1px solid @gray-light;
-        align-items: center;
-        margin: 0px 8px;
+  background: white;
+  .calendar-page__header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid @gray-light;
+    align-items: center;
+    margin: 0px 8px;
+  }
+  .calendar-page__body {
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    height: calc(~"100vh - 120px");
+    .__calendar-wrapper {
+      background-color: white;
+      overflow-y: auto;
     }
-    .calendar-page__body {
-        display: grid;
-        grid-template-columns: 1fr 4fr 1fr;
-        height: calc(~"100vh - 120px");
-        .__calendar-wrapper {
-            background-color: white;
-            overflow-y: auto;
-        }
+  }
+  .calendar-date-range-picker {
+    input {
+      background: transparent;
+      border: none;
+      text-align: center;
     }
-    .calendar-date-range-picker {
-        input {
-            background: transparent;
-            border: none;
-            text-align: center;
-        }
-        .ant-calendar-picker-icon {
-            display: none;
-        }
+    .ant-calendar-picker-icon {
+      display: none;
     }
+  }
 }
