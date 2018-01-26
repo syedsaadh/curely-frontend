@@ -51,7 +51,7 @@ class PatientModal extends React.Component<Props> {
       each(values, (value, key) => (values[key] = !value ? null : value));
       if (!err) {
         if (values.dob) {
-          values.dob = moment(values.dob, 'DD/MM/YYYY', true).format('YYYY-MM-DD');
+          values.dob = moment(values.dob).format('YYYY-MM-DD');
           values.age = null;
         }
         values.id = id;
@@ -65,10 +65,11 @@ class PatientModal extends React.Component<Props> {
     let allErrors = [];
     if (error) allErrors = error.errors;
     const activeDOBType = getFieldValue('dob') ? 'dob' : 'age';
+
     return (
       <Modal
         errors={allErrors}
-        title="Add Department"
+        title="Edit Patient"
         onSave={this.onSave}
         height="360px"
         width={768}
@@ -88,7 +89,7 @@ class PatientModal extends React.Component<Props> {
             <Input
               rules={{
                 type: 'string',
-                pattern: '[2-9]{2}[0-9]{8}',
+                pattern: '^[789][0-9]{9}$',
               }}
               validatorMessage="Phone Number is Incorrect"
               label="Phone (+91)"
@@ -129,9 +130,8 @@ class PatientModal extends React.Component<Props> {
           </Col>
           <Col md={6}>
             <DOBInput
-              defaultDOB={getFieldValue('dob')}
+              dobValue={getFieldValue('dob')}
               active={activeDOBType}
-              getFieldValue={getFieldValue}
               setFields={setFields}
               getFieldDecorator={getFieldDecorator}
             />
