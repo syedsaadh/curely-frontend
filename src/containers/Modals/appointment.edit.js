@@ -1,69 +1,56 @@
 import React from 'react';
-import moment from 'moment';
-import { Row, Col, Form, DatePicker, TimePicker } from 'antd';
+import { Row, Col, Form, TimePicker, DatePicker } from 'antd';
 import { FormComponentProps } from 'antd/lib/form/Form';
 import { connect } from 'react-redux';
-import { startCase, each, filter } from 'lodash';
-import {
-  Modal,
-  Input,
-  Select,
-  RadioGroup,
-  DOBInput,
-  TextArea,
-} from '../../components/ui-components';
+import { each, startCase, filter } from 'lodash';
+import moment from 'moment';
 import PatientSearch from '../../components/SearchBar/PatientSearch';
-import { addAppointment, toggleDoneAction, fetchAll } from '../../redux/Appointments/actions';
-import { closeModal } from '../../redux/App/actions';
+
+import { Modal, Input, RadioGroup, Select, TextArea } from '../../components/ui-components';
+import { editAppointment, toggleDoneAction, fetchAll } from '../../redux/Appointments/actions';
+import { closeModal, toggleModalEdited } from '../../redux/App/actions';
 
 interface Props extends FormComponentProps {
   closeModal: closeModal;
   fetchAll: fetchAll;
   toggleDoneAction: toggleDoneAction;
-  addAppointment: addAppointment;
+  editAppointment: editAppointment;
   doneAction: string;
 }
 
-class AppointmentModal extends React.Component<Props> {
-  state = {};
-  componentWillMount() {}
-  componentDidMount() {}
-
+class AppointmentEditModal extends React.Component<Props> {
+  state = {
+    disabled: true,
+  };
   componentWillReceiveProps(nextProps) {
-    if (nextProps.doneAction === 'add') {
+    const { isFieldsTouched, getFieldValue } = this.props.form;
+    if (nextProps.doneAction === 'edit') {
       this.props.closeModal();
-      this.props.toggleDoneAction();
       this.props.fetchAll();
+      this.props.toggleDoneAction();
+    }
+    if (isFieldsTouched() && this.state.disabled) {
+      this.setState({ disabled: false });
     }
   }
   onSave = () => {
+    const { validateFields, getFieldValue } = this.props.form;
     const Fields = [
-      'patientId',
-      'name',
-      'mobile',
-      'email',
-      'bloodGroup',
-      'dob',
-      'age',
       'department',
       'doctor',
-      'gender',
       'scheduleOnDate',
       'scheduleOnTime',
       'scheduleOnFor',
       'notes',
     ];
-    this.props.form.validateFields(Fields, {}, (err, values) => {
-      const vals = { ...values };
+    const id = getFieldValue('id');
+    validateFields(Fields, {}, (err, values) => {
+      console.log(values)
       if (!err) {
+        const vals = { ...values };
         each(vals, (value, key) => {
           vals[key] = !value ? null : value;
         });
-        if (!vals.age) vals.age = null;
-        if (vals.dob) {
-          vals.dob = moment(values.dob, 'DD/MM/YYYY', true).format('YYYY-MM-DD');
-          vals.age = null;
-        }
         const date: moment.Moment = vals.scheduleOnDate;
         const time: moment.Moment = vals.scheduleOnTime;
         const dateTime = moment(
@@ -72,7 +59,8 @@ class AppointmentModal extends React.Component<Props> {
         );
         vals.scheduledFrom = dateTime.format('YYYY-MM-DD HH:mm:ss');
         vals.scheduledTo = dateTime.add(vals.scheduleOnFor, 'm').format('YYYY-MM-DD HH:mm:ss');
-        this.props.addAppointment(vals);
+        vals.id = id;
+        this.props.editAppointment(vals);
       }
     });
   };
@@ -80,22 +68,6 @@ class AppointmentModal extends React.Component<Props> {
     const { setFieldsValue } = this.props.form;
     setFieldsValue({ doctor: undefined });
   };
-  onSearchPatient = () => {
-    this.props.form.resetFields(['patientId']);
-  };
-  onSelectPatient = (val) => {
-    this.props.form.setFieldsValue({
-      name: val.name,
-      patientId: val.id,
-      email: val.email,
-      occupation: val.occupation,
-      mobile: val.mobile,
-      bloodGroup: val.blood_group,
-      dob: val.dob ? moment(val.dob) : null,
-      gender: val.gender,
-    });
-  };
-
   renderDepartmentAndDoctors = () => {
     const { departments } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
@@ -107,7 +79,7 @@ class AppointmentModal extends React.Component<Props> {
         label: startCase(item.name),
       });
     });
-    if (getFieldValue('department')) {
+    if (getFieldValue('department') >= 1) {
       const tem = filter(departments, { id: getFieldValue('department') });
       if (tem.length > 0) {
         each(tem[0].users, (item) => {
@@ -118,6 +90,7 @@ class AppointmentModal extends React.Component<Props> {
         });
       }
     }
+    console.log(getFieldValue('department'))
     return (
       <Row type="flex" gutter={12}>
         <Col md={8}>
@@ -142,24 +115,25 @@ class AppointmentModal extends React.Component<Props> {
     );
   };
   render() {
-    const { startDateTime } = this.props;
     const { isFetching, error } = this.props;
-    const { getFieldDecorator, setFields, getFieldValue } = this.props.form;
+    const { getFieldDecorator } = this.props.form;
     let allErrors = [];
     if (error) allErrors = error.errors;
     return (
       <Modal
-        title="Add Appointment"
         errors={allErrors}
+        title="Edit Patient"
         onSave={this.onSave}
-        height="400px"
+        height="360px"
         width={768}
         loading={isFetching}
+        onSaveDisabled={this.state.disabled}
       >
         <Row type="flex" gutter={24}>
           <Col md={12}>
             <PatientSearch
               name="name"
+              disabled
               getFieldDecorator={getFieldDecorator}
               required
               label="Name"
@@ -179,6 +153,7 @@ class AppointmentModal extends React.Component<Props> {
           </Col>
           <Col md={12}>
             <Input
+              disabled
               rules={{
                 pattern: '^[2-9]{2}[0-9]{8}$',
                 message: 'Phone Number is Incorrect',
@@ -191,6 +166,7 @@ class AppointmentModal extends React.Component<Props> {
           </Col>
           <Col md={12}>
             <Input
+              disabled
               rules={{ type: 'email' }}
               validatorMessage="Email is Incorrect"
               label="Email"
@@ -201,10 +177,16 @@ class AppointmentModal extends React.Component<Props> {
         </Row>
         <Row type="flex" gutter={12}>
           <Col md={8}>
-            <Input label="Occupation" name="occupation" getFieldDecorator={getFieldDecorator} />
+            <Input
+              disabled
+              label="Occupation"
+              name="occupation"
+              getFieldDecorator={getFieldDecorator}
+            />
           </Col>
           <Col md={4}>
             <Select
+              disabled
               name="bloodGroup"
               label="Blood Group"
               getFieldDecorator={getFieldDecorator}
@@ -221,14 +203,8 @@ class AppointmentModal extends React.Component<Props> {
             />
           </Col>
           <Col md={6}>
-            <DOBInput
-              dobValue={getFieldValue('dob')}
-              setFields={setFields}
-              getFieldDecorator={getFieldDecorator}
-            />
-          </Col>
-          <Col md={6}>
             <RadioGroup
+              disabled
               name="gender"
               label="Gender"
               getFieldDecorator={getFieldDecorator}
@@ -243,14 +219,12 @@ class AppointmentModal extends React.Component<Props> {
           </Col>
           <Col md={8}>
             <Form.Item>
-              {getFieldDecorator('scheduleOnDate', { initialValue: moment(startDateTime) })(<DatePicker style={{ width: '100%' }} format="DD-MM-YYYY" />)}
+              {getFieldDecorator('scheduleOnDate')(<DatePicker style={{ width: '100%' }} format="DD-MM-YYYY" />)}
             </Form.Item>
           </Col>
           <Col md={1}>at</Col>
           <Col md={6}>
-            {getFieldDecorator('scheduleOnTime', {
-              initialValue: moment(startDateTime, 'HH:mm'),
-            })(<TimePicker style={{ width: '100%' }} format="HH:mm" />)}
+            {getFieldDecorator('scheduleOnTime')(<TimePicker style={{ width: '100%' }} format="HH:mm" />)}
           </Col>
           <Col md={1}>for</Col>
           <Col md={8}>
@@ -281,19 +255,44 @@ class AppointmentModal extends React.Component<Props> {
   }
 }
 
-const WrappedForm = Form.create()(AppointmentModal);
+const WrappedForm = Form.create({
+  mapPropsToFields(props) {
+    const data = { ...props.data };
+    if (!data) {
+      return {};
+    }
+    data.patientId = data.patient.id;
+    data.name = data.patient.name;
+    data.email = data.patient.email;
+    data.occupation = data.patient.occupation;
+    data.gender = data.patient.gender;
+    data.mobile = data.patient.mobile;
+    data.bloodGroup = data.patient.blood_group;
+    data.streetAddress = data.patient.street_address;
+    data.department = data.for_department;
+    data.doctor = data.for_doctor;    
+    data.scheduleOnDate = moment(data.scheduled_from);
+    data.scheduleOnTime = moment(data.scheduled_from);
+    data.scheduleOnFor = moment(data.scheduled_to).diff(data.scheduled_from, 'm');
 
-const mapStateToProps = (state) => {
-  const { Appointments, Departments } = state;
-  return {
-    ...Appointments,
-    departments: Departments.lists,
-  };
-};
+    data.patient = null;
+    const fields = {};
+    each(data, (value, key) => {
+      fields[key] = Form.createFormField({ value });
+    });
+    return fields;
+  },
+})(AppointmentEditModal);
+
+const mapStateToProps = state => ({
+  ...state.Appointments,
+  departments: state.Departments.lists,
+});
 const mapDispatchToProps = dispatch => ({
-  addAppointment: data => dispatch(addAppointment(data)),
-  closeModal: () => dispatch(closeModal()),
-  fetchAll: () => dispatch(fetchAll()),
+  editAppointment: data => dispatch(editAppointment(data)),
   toggleDoneAction: () => dispatch(toggleDoneAction()),
+  fetchAll: () => dispatch(fetchAll()),
+  closeModal: () => dispatch(closeModal()),
+  toggleModalEdited: () => dispatch(toggleModalEdited()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedForm);
