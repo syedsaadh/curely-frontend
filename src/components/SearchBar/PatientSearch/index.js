@@ -15,9 +15,13 @@ interface Props extends FormComponentProps {
   onSelect: Function;
   onSearch: Function;
   required: boolean;
+  disabled?: boolean;
 }
 
 class PatientSearch extends React.Component<Props> {
+  static defaultProps = {
+    disabled: false,
+  };
   constructor() {
     super();
     this.onSearch = this.onSearch.bind(this);
@@ -65,7 +69,13 @@ class PatientSearch extends React.Component<Props> {
   };
   render() {
     const {
-      placeholder, onSelect, required, label, getFieldDecorator, name,
+      placeholder,
+      onSelect,
+      required,
+      label,
+      getFieldDecorator,
+      name,
+      disabled,
     } = this.props;
     const { loading } = this.state;
     return (
@@ -78,6 +88,7 @@ class PatientSearch extends React.Component<Props> {
           onSelect(opt.props.valObj);
         }}
         optionLabelProp="value"
+        disabled={disabled}
       >
         <Input
           autoComplete={false}
