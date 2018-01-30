@@ -11,19 +11,17 @@ import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import { openModal } from '../../../../redux/App/actions';
 import { fetchWithDoctor } from '../../../../redux/Departments/actions';
 import { fetchAll } from '../../../../redux/Appointments/actions';
-
+import { Spinner, Space } from '../../../../components/ui-components';
 import './style.less';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
-moment.updateLocale('en-us', {
+moment.updateLocale('en', {
   week: {
-    dow: 1, // Saturday is the first day of the week.
-    doy: 4, // The week that contains Jan 4th is the first week of the year.
+    dow: 1, // Monday is the first day of the week.
   },
 });
-moment.locale('en-us');
-BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
+BigCalendar.momentLocalizer(moment);
 const DragAndDropCalendar = withDragAndDrop(BigCalendar);
 class CalendarPage extends React.Component {
   state = {
@@ -33,7 +31,14 @@ class CalendarPage extends React.Component {
   };
   componentWillMount() {
     this.updateTimes(this.state.current_date, this.state.current_view);
-    this.props.fetchAll();
+    this.props.fetchAll(
+      moment()
+        .startOf('isoWeek')
+        .format('DD-MM-YYYY'),
+      moment()
+        .add(7, 'days')
+        .format('DD-MM-YYYY'),
+    );
   }
 
   componentDidMount() {
@@ -47,9 +52,9 @@ class CalendarPage extends React.Component {
     this.updateTimes(this.state.current_date, view);
   };
   onSelectEvent = (event) => {
-    console.log(event);
     this.props.openModal('AppointmentEdit', {
       data: event.appointment,
+      startDateTime: event.start,
     });
   };
   onSelectSlot = (slotInfo) => {
@@ -63,11 +68,32 @@ class CalendarPage extends React.Component {
     this.setState({
       current_date: newDate,
     });
-
     this.updateTimes(newDate, view);
+    if (view === 'month') {
+      this.props.fetchAll(
+        newDate.startOf('month').format('DD-MM-YYYY'),
+        newDate.endOf('month').format('DD-MM-YYYY'),
+      );
+    } else {
+      this.props.fetchAll(
+        newDate.startOf('isoWeek').format('DD-MM-YYYY'),
+        newDate.endOf('isoWeek').format('DD-MM-YYYY'),
+      );
+    }
+  };
+  onCancel = (event) => {
+    this.props.openModal('AppointmentCancel', {
+      data: event.appointment,
+      start: event.start,
+    });
+  };
+  onDelete = (event) => {
+    this.props.openModal('AppointmentDelete', {
+      data: event.appointment,
+      start: event.start,
+    });
   };
   moveEvent = ({ event, start, end }) => {
-    console.log(event, start, end);
     this.props.openModal('AppointmentReschedule', {
       data: event.appointment,
       start,
@@ -111,11 +137,45 @@ class CalendarPage extends React.Component {
   changeCalendarView = (type) => {
     this.toolbar.onViewChange(type);
   };
-  popOverContent = event => (
-    <div className="popover-event-content">
-      <Button size="small" icon="edit" onClick={() => this.onSelectEvent(event.event)} />
-    </div>
-  );
+  popOverContent = (event) => {
+    const { appointment } = event;
+    const { patient } = appointment;
+    if (!patient) return null;
+    return (
+      <div className="popover-event-content">
+        <div className="patient-popover-card">
+          <div className="main-content">
+            <div className="body-2">{appointment.patient.name}</div>
+            <div className="body-1">P{appointment.patient.id}</div>
+            <Space h={8} />
+            <div className="body-1">
+              <i className="ion-android-call" /> &nbsp;{' '}
+              {patient.mobile ? patient.mobile : 'Not Available'}
+            </div>
+            <div className="body-1">
+              <i className="ion-android-mail" /> &nbsp;{' '}
+              {patient.email ? patient.email : 'Not Available'}
+            </div>
+          </div>
+          <div className="footer">
+            <Button size="small" onClick={() => this.onSelectEvent(event)}>
+              {appointment.cancelled ? 'Reschedule' : 'Edit'}
+            </Button>
+
+            {appointment.cancelled ? (
+              <Button size="small" type="danger" onClick={() => this.onDelete(event)}>
+                Delete
+              </Button>
+            ) : (
+              <Button size="small" type="danger" onClick={() => this.onCancel(event)}>
+                Cancel
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
   renderToolbar = (toolbar) => {
     this.toolbar = toolbar;
     return null;
@@ -124,15 +184,18 @@ class CalendarPage extends React.Component {
   render() {
     const { current_view, toolbarLabel } = this.state;
     const events = [];
-    const { lists } = this.props;
-    each(lists, item =>
+    const { lists, loading } = this.props;
+    each(lists, (item) => {
+      let title = item.patient.name;
+      if (item.cancelled) title = <strike>{item.patient.name}</strike>;
       events.push({
         id: item.id,
-        title: item.patient.name,
+        title,
         start: moment(item.scheduled_from).toDate(),
         end: moment(item.scheduled_to).toDate(),
         appointment: item,
-      }));
+      });
+    });
     return (
       <div className="calendar-page">
         <div className="calendar-page__header">
@@ -175,6 +238,7 @@ class CalendarPage extends React.Component {
         <div className="calendar-page__body">
           <div className="__sidebar-left" />
           <div className="__calendar-wrapper">
+            <Spinner spinning={loading} />
             <DragAndDropCalendar
               defaultView={current_view}
               selectable
@@ -197,10 +261,9 @@ class CalendarPage extends React.Component {
                   event: event => (
                     <Popover
                       openClassName="pop-open-class"
-                      overlayClassName="pop-overlay-class"
-                      content={this.popOverContent(event)}
+                      overlayClassName="popup-overlay--patient-info"
+                      content={this.popOverContent(event.event)}
                       placement="right"
-                      title={event.title}
                     >
                       <div style={{ width: '100%', height: '100%' }}>{event.title}</div>
                     </Popover>
@@ -218,11 +281,12 @@ class CalendarPage extends React.Component {
 
 const mapStateToProps = state => ({
   ...state.Appointments,
+  loading: state.Appointments.isFetching,
 });
 const mapDispatchToProps = dispatch => ({
   openModal: (type, props) => dispatch(openModal(type, props)),
   fetchWithDoctor: () => dispatch(fetchWithDoctor()),
-  fetchAll: () => dispatch(fetchAll()),
+  fetchAll: (fromDate, toDate) => dispatch(fetchAll(fromDate, toDate)),
 });
 
 export default DragDropContext(HTML5Backend)(connect(mapStateToProps, mapDispatchToProps)(CalendarPage));
