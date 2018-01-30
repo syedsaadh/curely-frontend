@@ -6,5 +6,6 @@ import RadioGroup from './radio';
 import Select from './select';
 import SelectableList from './selectableList';
 import TextArea from './textarea';
+import Spinner from './spinner';
 
-export { Divider, Modal, Input, RadioGroup, Select, SelectableList, TextArea, DOBInput };
+export { Divider, Modal, Input, RadioGroup, Select, SelectableList, TextArea, DOBInput, Spinner };
