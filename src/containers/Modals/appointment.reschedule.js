@@ -1,12 +1,10 @@
 import React from 'react';
-import { Row, Col, Form, TimePicker, DatePicker } from 'antd';
+import { Row, Col, Form } from 'antd';
 import { FormComponentProps } from 'antd/lib/form/Form';
 import { connect } from 'react-redux';
-import { each, startCase, filter } from 'lodash';
 import moment from 'moment';
-import PatientSearch from '../../components/SearchBar/PatientSearch';
 
-import { Modal, Input, RadioGroup, Select, TextArea } from '../../components/ui-components';
+import { Modal } from '../../components/ui-components';
 import { editAppointment, toggleDoneAction, fetchAll } from '../../redux/Appointments/actions';
 import { closeModal, toggleModalEdited } from '../../redux/App/actions';
 
@@ -21,9 +19,17 @@ interface Props extends FormComponentProps {
 class AppointmentEditModal extends React.Component<Props> {
   state = {};
   componentWillReceiveProps(nextProps) {
+    const { start } = this.props;
     if (nextProps.doneAction === 'edit') {
       this.props.closeModal();
-      this.props.fetchAll();
+      this.props.fetchAll(
+        moment(start)
+          .startOf('isoWeek')
+          .format('DD-MM-YYYY'),
+        moment(start)
+          .endOf('isoWeek')
+          .format('DD-MM-YYYY'),
+      );
       this.props.toggleDoneAction();
     }
   }
@@ -79,7 +85,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   editAppointment: data => dispatch(editAppointment(data)),
   toggleDoneAction: () => dispatch(toggleDoneAction()),
-  fetchAll: () => dispatch(fetchAll()),
+  fetchAll: (start, end) => dispatch(fetchAll(start, end)),
   closeModal: () => dispatch(closeModal()),
   toggleModalEdited: () => dispatch(toggleModalEdited()),
 });

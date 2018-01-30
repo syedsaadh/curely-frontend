@@ -30,10 +30,18 @@ class AppointmentModal extends React.Component<Props> {
   componentDidMount() {}
 
   componentWillReceiveProps(nextProps) {
+    const { startDateTime } = this.props;
     if (nextProps.doneAction === 'add') {
       this.props.closeModal();
       this.props.toggleDoneAction();
-      this.props.fetchAll();
+      this.props.fetchAll(
+        moment(startDateTime)
+          .startOf('isoWeek')
+          .format('DD-MM-YYYY'),
+        moment(startDateTime)
+          .endOf('isoWeek')
+          .format('DD-MM-YYYY'),
+      );
     }
   }
   onSave = () => {
@@ -293,7 +301,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
   addAppointment: data => dispatch(addAppointment(data)),
   closeModal: () => dispatch(closeModal()),
-  fetchAll: () => dispatch(fetchAll()),
+  fetchAll: (fromDate, toDate) => dispatch(fetchAll(fromDate, toDate)),
   toggleDoneAction: () => dispatch(toggleDoneAction()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedForm);

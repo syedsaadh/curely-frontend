@@ -23,10 +23,18 @@ class AppointmentEditModal extends React.Component<Props> {
     disabled: true,
   };
   componentWillReceiveProps(nextProps) {
+    const { startDateTime } = this.props;
     const { isFieldsTouched, getFieldValue } = this.props.form;
     if (nextProps.doneAction === 'edit') {
       this.props.closeModal();
-      this.props.fetchAll();
+      this.props.fetchAll(
+        moment(startDateTime)
+        .startOf('isoWeek')
+        .format('DD-MM-YYYY'),
+      moment(startDateTime)
+        .endOf('isoWeek')
+        .format('DD-MM-YYYY'),
+      );
       this.props.toggleDoneAction();
     }
     if (isFieldsTouched() && this.state.disabled) {
@@ -291,7 +299,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   editAppointment: data => dispatch(editAppointment(data)),
   toggleDoneAction: () => dispatch(toggleDoneAction()),
-  fetchAll: () => dispatch(fetchAll()),
+  fetchAll: (start, end) => dispatch(fetchAll(start, end)),
   closeModal: () => dispatch(closeModal()),
   toggleModalEdited: () => dispatch(toggleModalEdited()),
 });
