@@ -2,8 +2,12 @@ import { department as _config } from '../config/service/index';
 import { getRequest, postRequest } from './_helper';
 
 class AppointmentService {
-  static getAllAppointments() {
-    const request = getRequest(_config.baseUrl, '/admin/appointments/all', true);
+  static getAllAppointments(fromDate, toDate) {
+    const request = getRequest(
+      _config.baseUrl,
+      `/admin/appointments/get?from=${fromDate}&to=${toDate}`,
+      true,
+    );
     return fetch(request);
   }
   static addAppointment(data) {
@@ -15,7 +19,7 @@ class AppointmentService {
     return fetch(request);
   }
   static cancelAppointment(data) {
-    const request = postRequest(_config.baseUrl, '/admin/departments/cancel', data);
+    const request = postRequest(_config.baseUrl, '/admin/appointments/cancel', data);
     return fetch(request);
   }
 }
