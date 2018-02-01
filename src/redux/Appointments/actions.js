@@ -80,10 +80,10 @@ export const toggleDoneAction = () => ({
   type: actions.TOGGLE_DONE_ACTION,
 });
 
-export const fetchAll = () => (dispatch) => {
+export const fetchAll = (fromDate, toDate) => (dispatch) => {
   dispatch(fetchAllRequest());
   service
-    .getAllAppointments()
+    .getAllAppointments(fromDate, toDate)
     .then(checkStatus)
     .then(checkResponseCode)
     .then((response) => {
@@ -122,10 +122,10 @@ export const editAppointment = data => (dispatch) => {
     });
 };
 
-export const cancel = id => (dispatch) => {
+export const cancel = data => (dispatch) => {
   dispatch(cancelRequest());
   service
-    .cancelAppointment(id)
+    .cancelAppointment(data)
     .then(checkStatus)
     .then(checkResponseCode)
     .then((response) => {

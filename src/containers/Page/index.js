@@ -8,6 +8,7 @@ import Procedures from './Protected/settings/settings.procedure';
 import PracticeStaff from './Protected/settings/settings.practicestaff';
 import Patients from './Protected/patients';
 import Calendar from './Protected/calendar';
+import Components from './components';
 
 export {
   BlankPage,
@@ -20,4 +21,5 @@ export {
   PracticeStaff,
   Patients,
   Calendar,
+  Components,
 };

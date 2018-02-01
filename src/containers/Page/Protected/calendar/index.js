@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import { Button, DatePicker, Popover, Radio } from 'antd';
+import { Button, Alert, Popover, Radio } from 'antd';
 import BigCalendar from 'react-big-calendar';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
@@ -144,6 +144,9 @@ class CalendarPage extends React.Component {
     return (
       <div className="popover-event-content">
         <div className="patient-popover-card">
+          {appointment.cancelled ? (
+            <Alert banner type="error" message="Appointment has been Cancelled" />
+          ) : null}
           <div className="main-content">
             <div className="body-2">{appointment.patient.name}</div>
             <div className="body-1">P{appointment.patient.id}</div>
@@ -157,6 +160,7 @@ class CalendarPage extends React.Component {
               {patient.email ? patient.email : 'Not Available'}
             </div>
           </div>
+
           <div className="footer">
             <Button size="small" onClick={() => this.onSelectEvent(event)}>
               {appointment.cancelled ? 'Reschedule' : 'Edit'}
