@@ -7,6 +7,8 @@ import PracticeStaff from './PracticeStaff/reducer';
 import Roles from './Roles/reducer';
 import Patients from './Patients/reducer';
 import Appointments from './Appointments/reducer';
+import VitalSigns from './VitalSigns/reducer';
+import Charts from './Charting/reducer';
 
 const rootReducer = {
   App,
@@ -18,5 +20,7 @@ const rootReducer = {
   Roles,
   Patients,
   Appointments,
+  VitalSigns,
+  Charts,
 };
 export default rootReducer;
