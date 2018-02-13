@@ -7,6 +7,10 @@ export const actions = {
   APPOINTMENT_FETCH_ALL_SUCCESS: 'APPOINTMENT_FETCH_ALL_SUCCESS',
   APPOINTMENT_FETCH_ALL_FAILED: 'APPOINTMENT_FETCH_ALL_FAILED',
 
+  APPOINTMENT_FETCH_REQUEST: 'APPOINTMENT_FETCH_REQUEST',
+  APPOINTMENT_FETCH_SUCCESS: 'APPOINTMENT_FETCH_SUCCESS',
+  APPOINTMENT_FETCH_FAILED: 'APPOINTMENT_FETCH_FAILED',
+
   APPOINTMENT_ADD_REQUEST: 'APPOINTMENT_ADD_REQUEST',
   APPOINTMENT_ADD_SUCCESS: 'APPOINTMENT_ADD_SUCCESS',
   APPOINTMENT_ADD_FAILED: 'APPOINTMENT_ADD_FAILED',
@@ -22,6 +26,18 @@ export const actions = {
   SELECT_APPOINTMENT: 'SELECT_APPOINTMENT',
   TOGGLE_DONE_ACTION: 'TOGGLE_DONE_ACTION',
 };
+
+export const fetchRequest = () => ({
+  type: actions.APPOINTMENT_FETCH_REQUEST,
+});
+export const fetchSuccess = data => ({
+  type: actions.APPOINTMENT_FETCH_SUCCESS,
+  payload: data,
+});
+export const fetchFailed = error => ({
+  type: actions.APPOINTMENT_FETCH_FAILED,
+  payload: error,
+});
 
 export const fetchAllRequest = () => ({
   type: actions.APPOINTMENT_FETCH_ALL_REQUEST,
@@ -79,6 +95,20 @@ export const selectAppointment = data => ({
 export const toggleDoneAction = () => ({
   type: actions.TOGGLE_DONE_ACTION,
 });
+
+export const fetch = appointmentId => (dispatch) => {
+  dispatch(fetchRequest());
+  service
+    .getAppointment(appointmentId)
+    .then(checkStatus)
+    .then(checkResponseCode)
+    .then((response) => {
+      dispatch(fetchSuccess(response.Payload));
+    })
+    .catch((error) => {
+      dispatch(fetchFailed(error));
+    });
+};
 
 export const fetchAll = (fromDate, toDate) => (dispatch) => {
   dispatch(fetchAllRequest());

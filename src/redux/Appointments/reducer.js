@@ -1,4 +1,5 @@
 import { actions as types } from './actions';
+import { findIndex } from 'lodash';
 
 type State = {
   lists: Array,
@@ -33,6 +34,19 @@ export default function reducer(state: State = initState, action: Action) {
     case types.APPOINTMENT_CANCEL_FAILED: {
       return { ...state, isFetching: false, error: action.payload };
     }
+    case types.APPOINTMENT_FETCH_SUCCESS: {
+      const appointments = [...state.lists];
+      const fetchedData = action.payload;
+      const index = findIndex(appointments, o => o.id === fetchedData.id);
+      if (index) appointments[index] = fetchedData;
+      else appointments.push(fetchedData);
+      return {
+        ...state,
+        isFetching: false,
+        lists: appointments,
+        doneAction: 'fetch',
+      };
+    }
     case types.APPOINTMENT_FETCH_ALL_SUCCESS: {
       return {
         ...state,
@@ -53,6 +67,9 @@ export default function reducer(state: State = initState, action: Action) {
     }
     case types.APPOINTMENT_CANCEL_SUCCESS: {
       return { ...state, isFetching: false, doneAction: 'cancel' };
+    }
+    case types.TOGGLE_DONE_ACTION: {
+      return { ...state, doneAction: null };
     }
     default:
       return state;
