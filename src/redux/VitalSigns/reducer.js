@@ -21,19 +21,19 @@ const initState = {
 
 export default function reducer(state: State = initState, action: Action) {
   switch (action.type) {
-    case types.PROCEDURES_ADD_REQUEST:
-    case types.PROCEDURES_EDIT_REQUEST:
-    case types.PROCEDURES_FETCH_ALL_REQUEST:
-    case types.PROCEDURES_DELETE_REQUEST: {
+    case types.VITAL_SIGNS_ADD_REQUEST:
+    case types.VITAL_SIGNS_EDIT_REQUEST:
+    case types.VITAL_SIGNS_FETCH_ALL_REQUEST:
+    case types.VITAL_SIGNS_DELETE_REQUEST: {
       return { ...state, isFetching: true, error: null };
     }
-    case types.PROCEDURES_ADD_FAILED:
-    case types.PROCEDURES_EDIT_FAILED:
-    case types.PROCEDURES_FETCH_ALL_FAILED:
-    case types.PROCEDURES_DELETE_FAILED: {
+    case types.VITAL_SIGNS_ADD_FAILED:
+    case types.VITAL_SIGNS_EDIT_FAILED:
+    case types.VITAL_SIGNS_FETCH_ALL_FAILED:
+    case types.VITAL_SIGNS_DELETE_FAILED: {
       return { ...state, isFetching: false, error: action.payload };
     }
-    case types.PROCEDURES_FETCH_ALL_SUCCESS: {
+    case types.VITAL_SIGNS_FETCH_ALL_SUCCESS: {
       return {
         ...state,
         isFetching: false,
@@ -41,17 +41,17 @@ export default function reducer(state: State = initState, action: Action) {
         doneAction: 'fetch',
       };
     }
-    case types.PROCEDURES_ADD_SUCCESS: {
+    case types.VITAL_SIGNS_ADD_SUCCESS: {
       return {
         ...state,
         isFetching: false,
         doneAction: 'add',
       };
     }
-    case types.PROCEDURES_EDIT_SUCCESS: {
+    case types.VITAL_SIGNS_EDIT_SUCCESS: {
       return { ...state, isFetching: false, doneAction: 'edit' };
     }
-    case types.PROCEDURES_DELETE_SUCCESS: {
+    case types.VITAL_SIGNS_DELETE_SUCCESS: {
       return { ...state, isFetching: false, doneAction: 'delete' };
     }
     case types.TOGGLE_DONE_ACTION: {

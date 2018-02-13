@@ -54,6 +54,9 @@ export default function reducer(state: State = initState, action: Action) {
     case types.PRACTICE_STAFF_DELETE_SUCCESS: {
       return { ...state, isFetching: false, doneAction: 'delete' };
     }
+    case types.TOGGLE_DONE_ACTION: {
+      return { ...state, doneAction: null };
+    }
     default:
       return state;
   }

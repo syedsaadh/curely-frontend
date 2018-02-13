@@ -1,12 +1,12 @@
+import { each, findIndex, sortBy } from 'lodash';
 import { actions as types } from './actions';
-import { each, filter, sortBy } from 'lodash';
 import moment from 'moment-timezone';
 
 type State = {
   all: Array,
   today: Array,
   recent: Array,
-  selected: object,
+  selected: Object,
   doneAction: string | null,
   isFetching: boolean,
   error: string | null,
@@ -47,7 +47,6 @@ export default function reducer(state: State = initState, action: Action) {
       const allPatients = sortBy([...action.payload], ['name']);
       const recent = [];
       const today = [];
-      const timezone = moment.tz.guess();
       each(allPatients, (patient) => {
         const createdDate = moment.utc(patient.created_at).local();
         if (createdDate.isValid()) {
@@ -91,6 +90,22 @@ export default function reducer(state: State = initState, action: Action) {
     }
     case types.PATIENT_DELETE_SUCCESS: {
       return { ...state, isFetching: false, doneAction: 'delete' };
+    }
+    case 'APPOINTMENT_FETCH_SUCCESS': {
+      const selected = { ...state.selected };
+      if (!selected) return { ...state };
+      const fetchedData = action.payload;
+      const index = findIndex(selected.appointments, o => o.id === fetchedData.id);
+      console.log(index, 'Index Found', fetchedData, selected);
+      if (index >= 0) selected.appointments[index] = fetchedData;
+      return {
+        ...state,
+        isFetching: false,
+        selected,
+      };
+    }
+    case types.TOGGLE_DONE_ACTION: {
+      return { ...state, doneAction: null };
     }
     default:
       return state;
