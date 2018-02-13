@@ -5,21 +5,25 @@ class AppointmentService {
   static getAllAppointments(fromDate, toDate) {
     const request = getRequest(
       _config.baseUrl,
-      `/admin/appointments/get?from=${fromDate}&to=${toDate}`,
+      `/admin/appointment/get?from=${fromDate}&to=${toDate}`,
       true,
     );
     return fetch(request);
   }
+  static getAppointment(appointmentId) {
+    const request = getRequest(_config.baseUrl, `/admin/appointment/get/${appointmentId}`, true);
+    return fetch(request);
+  }
   static addAppointment(data) {
-    const request = postRequest(_config.baseUrl, '/admin/appointments/create', data);
+    const request = postRequest(_config.baseUrl, '/admin/appointment/create', data);
     return fetch(request);
   }
   static editAppointment(data) {
-    const request = postRequest(_config.baseUrl, '/admin/appointments/edit', data);
+    const request = postRequest(_config.baseUrl, '/admin/appointment/edit', data);
     return fetch(request);
   }
   static cancelAppointment(data) {
-    const request = postRequest(_config.baseUrl, '/admin/appointments/cancel', data);
+    const request = postRequest(_config.baseUrl, '/admin/appointment/cancel', data);
     return fetch(request);
   }
 }
