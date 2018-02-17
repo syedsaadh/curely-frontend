@@ -36,7 +36,7 @@ export function AppContainer(props: Props) {
         </Debounce>
         <Sidebar />
         <div className="main-container">
-          <Topbar />
+          <Topbar history={props.history} />
           <div className="content-wrapper">
             <AppRouter url={url} />
           </div>

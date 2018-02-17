@@ -7,5 +7,17 @@ import Select from './select';
 import SelectableList from './selectableList';
 import TextArea from './textarea';
 import Spinner from './spinner';
+import Space from './space';
 
-export { Divider, Modal, Input, RadioGroup, Select, SelectableList, TextArea, DOBInput, Spinner };
+export {
+  Divider,
+  Modal,
+  Input,
+  RadioGroup,
+  Select,
+  SelectableList,
+  TextArea,
+  DOBInput,
+  Spinner,
+  Space,
+};

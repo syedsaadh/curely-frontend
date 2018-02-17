@@ -1,18 +1,20 @@
 import React from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { Row, Col, Button } from 'antd';
-import moment from 'moment';
 import { startCase } from 'lodash';
+import { Space } from '../../../../components/ui-components';
 import { fetchPatient } from '../../../../redux/Patients/actions';
 import { openModal } from '../../../../redux/App/actions';
-
+import { fetchAll as fetchAllVitalSigns } from '../../../../redux/VitalSigns/actions';
 import patientPlaceholder from '../../../../image/patientPlaceholder.svg';
+import Charting from '../../../../components/Charting';
 
 class PatientDetails extends React.Component {
   componentWillMount() {
-    console.log('Mounted');
     const { match } = this.props;
     this.props.fetchPatient(match.params.id);
+    this.props.fetchAllVitalSigns();
   }
   componentWillReceiveProps(nextProps) {
     const { match } = this.props;
@@ -80,6 +82,18 @@ class PatientDetails extends React.Component {
             </Button>
           </Col>
         </Row>
+        <div className="patient-content">
+          <div className="appointments-timeline">
+            {selected.appointments
+              ? selected.appointments.map(item => (
+                <div key={item.id} className="timeline-item">
+                  <Charting data={item} />
+                </div>
+                ))
+              : null}
+          </div>
+          <Space h={80} />
+        </div>
       </div>
     );
   }
@@ -93,5 +107,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
   openModal: (type, props) => dispatch(openModal(type, props)),
   fetchPatient: id => dispatch(fetchPatient(id)),
+  fetchAllVitalSigns: () => dispatch(fetchAllVitalSigns()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PatientDetails);

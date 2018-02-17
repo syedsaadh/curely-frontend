@@ -1,0 +1,101 @@
+.charting-card {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  box-shadow: 5px 4px 12px 0 rgba(0, 0, 0, 0.1);
+  > .header {
+    display: flex;
+    border: 1px solid #ebebeb;
+    font-size: 13px;
+    .charting-date {
+      padding: 12px;
+      text-align: center;
+      .date-day {
+        font-size: 14px;
+      }
+    }
+    .charting-basic-info {
+      padding: 12px;
+      border-left: 1px solid #ebebeb;
+      flex: 1;
+      line-height: 1.2;
+    }
+    .charting-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 16px;
+    }
+  }
+  > .body {
+    border: 1px solid #ebebeb;
+    border-top-width: 0;
+    padding: 14px;
+  }
+}
+
+.charting-card .charting__item {
+  font-size: 13px;
+}
+
+.charting-card .card-record-details {
+  > .header {
+    display: flex;
+    align-items: center;
+    .title {
+      flex: 1;
+      line-height: 3;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .actions {
+      .action-item {
+        cursor: pointer;
+        padding: 8px;
+        display: none;
+        font-size: 16px;
+      }
+    }
+  }
+  &:hover {
+    > .header {
+      .action-item {
+        display: block;
+      }
+    }
+  }
+  > .footer {
+    display: flex;
+    border-top: 1px solid #ededed;
+    padding-top: 12px;
+    .left {
+      margin-right: auto;
+    }
+    .right {
+      margin-left: auto;
+      .ant-btn {
+        margin-left: 8px;
+      }
+    }
+  }
+  .fields {
+    padding: 16px 0px;
+    border-bottom: 1px solid #ebebeb;
+    &.fields--edit {
+      border: none;
+      padding: 4px 0px;
+      .ant-form-item {
+        margin-bottom: 0px;
+      }
+    }
+    &.fields--table-edit {
+      .ant-form-item {
+        display: inline-block;
+        .chart-inputs--small {
+          width: 50px;
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+}

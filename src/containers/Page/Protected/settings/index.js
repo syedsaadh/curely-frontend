@@ -10,7 +10,7 @@ class SettingsPage extends React.Component {
     const { url } = this.props.match;
 
     return (
-      <div className="grid-container grid-1-5">
+      <div className="grid-container grid-1-4">
         <div className="left-container content-sidebar-wrapper">
           <div className="page-heading">Settings</div>
           <Menu className="content-sidebar" mode="inline">

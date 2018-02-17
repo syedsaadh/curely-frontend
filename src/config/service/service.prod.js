@@ -19,6 +19,12 @@ const roles = {
 const patient = {
   baseUrl: 'http://127.0.0.1:8000/api',
 };
+const vitalsigns = {
+  baseUrl: 'http://127.0.0.1:8000/api',
+};
+const charts = {
+  baseUrl: 'http://127.0.0.1:8000/api',
+};
 module.exports = {
   session,
   department,
@@ -27,4 +33,6 @@ module.exports = {
   practicestaff,
   roles,
   patient,
+  vitalsigns,
+  charts,
 };

@@ -1,7 +1,56 @@
+@import "../../../../styles/base.less";
 .patients-list-wrapper {
   padding-left: 0px;
 }
+
+.grid-container--patient {
+  .left-container {
+    max-width: 300px;
+  }
+}
+
 .patient-header {
   padding: 8px 16px;
   border-bottom: 1px solid #f0f0f0;
+}
+
+.patient-content {
+  padding: 16px 24px;
+  .appointments-timeline {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    .timeline-item {
+      padding-top: 30px;
+      padding-left: 30px;
+      position: relative;
+      background-color: inherit;
+      &::before {
+        left: 0px;
+        content: "";
+        position: absolute;
+        width: 2px;
+        background-color: #dfdfdf;
+        top: 0px;
+        bottom: 0;
+      }
+      &::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        left: -9px;
+        background-color: @primary-color;
+        top: 48px;
+        border-radius: 50%;
+        z-index: 1;
+      }
+    }
+    .timeline-item:last-child::before {
+      height: 48px;
+    }
+    .timeline-item:first-child::before {
+      top: 48px;
+    }
+  }
 }

@@ -15,7 +15,7 @@ class PatientsPage extends React.Component {
   render() {
     const { url } = this.props.match;
     return (
-      <div className="grid-container grid-1-4">
+      <div className="grid-container grid-1-4 grid-container--patient">
         <div className="left-container content-sidebar-wrapper">
           <div className="page-heading">
             Patients

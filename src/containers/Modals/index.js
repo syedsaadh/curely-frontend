@@ -9,6 +9,10 @@ import PracticeStaffEdit from './practicestaff.edit';
 import PatientAdd from './patient.add';
 import PatientEdit from './patient.edit';
 import AppointmentAdd from './appointment.add';
+import AppointmentEdit from './appointment.edit';
+import AppointmentReschedule from './appointment.reschedule';
+import AppointmentCancel from './appointment.cancel';
+import AppointmentDelete from './appointment.delete';
 
 export {
   DepartmentAdd,
@@ -22,4 +26,8 @@ export {
   PatientAdd,
   PatientEdit,
   AppointmentAdd,
+  AppointmentEdit,
+  AppointmentReschedule,
+  AppointmentCancel,
+  AppointmentDelete,
 };

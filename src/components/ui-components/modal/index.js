@@ -12,9 +12,11 @@ type Props = {
   height?: string,
   errors?: Array | string | null,
   width?: number,
+  cancelText?: string,
+  okText?: string,
 };
 function CustomModal(props: Props) {
-  const { errors } = props;
+  const { errors, cancelText, okText } = props;
   let showError = null;
   if (isArray(errors)) {
     showError = errors.length > 0 ? errors.join(' | ') : null;
@@ -28,12 +30,11 @@ function CustomModal(props: Props) {
       maskClosable={false}
       closable={false}
       visible
-      okText="Save"
       bodyStyle={{ height: props.height }}
       maskStyle={{ background: '#38414df2' }}
       footer={[
         <Button key="cancel" onClick={() => store.dispatch(closeModal())}>
-          Cancel
+          {cancelText}
         </Button>,
         <Button
           key="submit"
@@ -42,7 +43,7 @@ function CustomModal(props: Props) {
           loading={props.loading}
           onClick={props.onSave}
         >
-          Save
+          {okText}
         </Button>,
       ]}
     >
@@ -59,6 +60,8 @@ CustomModal.defaultProps = {
   onSaveDisabled: false,
   height: '420px',
   width: 640,
+  okText: 'Save',
+  cancelText: 'Cancel',
 };
 
 export default CustomModal;

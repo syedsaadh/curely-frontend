@@ -62,6 +62,14 @@ class Sidebar extends React.Component {
               <span>Settings</span>
             </a>
           </Menu.Item>
+          <Menu.Item key="4">
+            <a href="/dashboard/components">
+              <Icon>
+                <icon className="ion-ionic" />
+              </Icon>
+              <span>Settings</span>
+            </a>
+          </Menu.Item>
         </Menu>
       </Sider>
     );

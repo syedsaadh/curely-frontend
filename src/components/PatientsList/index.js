@@ -30,7 +30,7 @@ class PatientsList extends React.Component {
     each(today, item => todayPatient.push({ id: item.id, label: item.name, value: item }));
 
     return (
-      <Tabs defaultActiveKey="1" size="small">
+      <Tabs defaultActiveKey="1" type="card" className="patients-list-container">
         <TabPane tab="Today" key="1">
           <SelectableList
             list={todayPatient}
