@@ -8,6 +8,9 @@ import VitalSignAdd from './Vital Signs/charting.vitalsigns.details.new';
 import ClinicalNotes from './ClinicalNotes/charting.clinicalnotes';
 import ClinicalNotesAdd from './ClinicalNotes/charting.clinicalnotes.details.new';
 import TreatmentPlans from './TreatmentPlans/charting.treatmentplans';
+import TreatmentPlansAdd from './TreatmentPlans/charting.treatmentplans.new';
+import CompletedProcedures from './CompletedProcedures/charting.completedprocedures';
+import CompletedProceduresAdd from './CompletedProcedures/charting.completedprocedures.new';
 
 import './style.less';
 
@@ -32,6 +35,14 @@ class Charting extends React.Component<Props> {
       }
       case 'clinicalNotes': {
         addComponent = 'ClinicalNotesAdd';
+        break;
+      }
+      case 'treatmentPlans': {
+        addComponent = 'TreatmentPlansAdd';
+        break;
+      }
+      case 'completedProcedures': {
+        addComponent = 'CompletedProceduresAdd';
         break;
       }
       default:
@@ -78,8 +89,9 @@ class Charting extends React.Component<Props> {
         <div>
           {data.vital_signs ? <VitalSign data={data.vital_signs} /> : null}
           {data.clinical_notes ? <ClinicalNotes data={data.clinical_notes} /> : null}
+          {data.treatment_plans.length > 0 ? <TreatmentPlans data={data.treatment_plans} /> : null}
           {data.completed_procedures.length > 0 ? (
-            <TreatmentPlans data={data.completed_procedures} />
+            <CompletedProcedures data={data.completed_procedures} />
           ) : null}
         </div>
       );
@@ -89,6 +101,12 @@ class Charting extends React.Component<Props> {
     }
     if (isAddingComponent === 'ClinicalNotesAdd') {
       return <ClinicalNotesAdd onCancel={this.onCancelAdd} appointmentId={data.id} />;
+    }
+    if (isAddingComponent === 'TreatmentPlansAdd') {
+      return <TreatmentPlansAdd onCancel={this.onCancelAdd} appointmentId={data.id} />;
+    }
+    if (isAddingComponent === 'CompletedProceduresAdd') {
+      return <CompletedProceduresAdd onCancel={this.onCancelAdd} appointmentId={data.id} />;
     }
   };
   render() {
