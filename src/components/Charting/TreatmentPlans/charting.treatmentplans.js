@@ -6,7 +6,7 @@ import { Procedure } from '../_types';
 import './style.treatmentplans.less';
 
 type Props = {
-  data: Procedure,
+  data: Array<Procedure>,
 };
 class TreatmentPlansSection extends React.Component<Props> {
   state = {
@@ -29,8 +29,7 @@ class TreatmentPlansSection extends React.Component<Props> {
       <div className="charting__item charting__item--treatment-plans-container">
         {edit ? (
           <TreatmentPlansEdit
-            clinicalNotesId={data.id}
-            appointmentId={data.appointment_id}
+            appointmentId={data[0].appointment_id} // To Revisit this code **
             data={data}
             onCancel={this.onCancel}
           />

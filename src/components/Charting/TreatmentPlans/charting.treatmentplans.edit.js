@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { filter } from 'lodash';
 import { Row, Col, Button, Form, message } from 'antd';
 import { FormComponentProps } from 'antd/lib/form/Form';
+import { ProcedureSearchInput } from '../../SearchBar';
 import { Input, Divider, Space } from '../../ui-components';
 import { Procedure } from '../_types';
 import {
-  updateClinicalNotes,
+  updateTreatmentPlans,
   toggleDoneAction,
-  deleteClinicalNotes,
+  deleteTreatmentPlans,
 } from '../../../redux/Charting/actions';
 import { fetch as fetchAppointment } from '../../../redux/Appointments/actions';
 
@@ -39,8 +41,18 @@ interface Props extends FormComponentProps {
 }
 class TreatmentPlansEdit extends React.Component<Props, State> {
   componentWillMount() {
-    const { data } = this.props;
+    const { data, charts } = this.props;
+    const { doneAction } = charts;
     const formDataProcedures: Array<procedureformdata> = [];
+
+    if (doneAction === 'update' || doneAction === 'delete') {
+      message.success('Updated!');
+      this.props.toggleDoneAction();
+      this.props.fetchAppointment(this.props.appointmentId);
+      this.props.onCancel();
+      return;
+    }
+
     data.forEach((item) => {
       formDataProcedures.push({
         name: item.procedure_name,
@@ -50,6 +62,7 @@ class TreatmentPlansEdit extends React.Component<Props, State> {
         units: item.procedure_units,
         cost: item.procedure_cost,
         discount: item.procedure_discount,
+        notes: '',
       });
     });
     this.setState({ newdata: formDataProcedures });
@@ -68,7 +81,6 @@ class TreatmentPlansEdit extends React.Component<Props, State> {
     }
     const units = form.getFieldValue('Iunits');
     const deleted = form.getFieldValue('deleted');
-
     const costs = form.getFieldValue('Icost');
     const discounts = form.getFieldValue('Idiscount');
     const changed = newdata.map((it, index) => {
@@ -77,6 +89,7 @@ class TreatmentPlansEdit extends React.Component<Props, State> {
       item.discount = parseFloat(discounts[index]);
       item.units = parseFloat(units[index]);
       item.delete = deleted[index] === 'true';
+      item.notes = '';
       return item;
     });
     this.setState({ newdata: changed });
@@ -90,15 +103,17 @@ class TreatmentPlansEdit extends React.Component<Props, State> {
       if (!err) {
         const formdata: FormData = {};
         formdata.appointmentId = appointmentId;
-        formdata.procedures = [];
-
-        console.log(newdata);
+        formdata.procedures = filter(
+          newdata,
+          o => o.id !== null || (o.id === null && o.delete === false),
+        );
+        this.props.updateTreatmentPlans(formdata);
       }
     });
   };
   onDelete = () => {
     const { appointmentId } = this.props;
-    this.props.deleteClinicalNotes(appointmentId);
+    this.props.deleteTreatmentPlans(appointmentId);
   };
   onDeleteProcedure = (index) => {
     const { setFieldsValue, getFieldValue } = this.props.form;
@@ -106,6 +121,35 @@ class TreatmentPlansEdit extends React.Component<Props, State> {
     deletedVals[index] = 'true';
     setFieldsValue({
       deleted: deletedVals,
+    });
+  };
+  onNewProcedureSelect = (val) => {
+    const { newdata } = this.state;
+    const { form } = this.props;
+    const { setFieldsValue, getFieldValue } = form;
+    const IUnits = getFieldValue('Iunits');
+    const ICosts = getFieldValue('Icost');
+    const IDiscounts = getFieldValue('Idiscount');
+    IUnits[newdata.length] = 1;
+    ICosts[newdata.length] = val.cost;
+    IDiscounts[newdata.length] = 0;
+    newdata.push({
+      procedure_id: val.id,
+      name: val.name,
+      units: 1,
+      cost: val.cost,
+      discount: 0,
+      notes: '',
+      id: null,
+      delete: false,
+    });
+    this.setState({ newdata }, () => {
+      setFieldsValue({
+        Iunits: IUnits,
+        Icost: ICosts,
+        Idiscount: IDiscounts,
+        ISearchProcedure: '',
+      });
     });
   };
   renderProcedures = () => {
@@ -119,7 +163,7 @@ class TreatmentPlansEdit extends React.Component<Props, State> {
       return (
         <Row
           style={{ display: deleted === 'true' ? 'none' : 'flex' }}
-          key={item.id}
+          key={index}
           type="flex"
           align="middle"
           className="fields fields--edit fields--table-edit"
@@ -167,9 +211,11 @@ class TreatmentPlansEdit extends React.Component<Props, State> {
     });
   };
   render() {
-    const { charts, data } = this.props;
+    const { charts, data, form } = this.props;
+    const { getFieldDecorator, getFieldValue } = form;
+    console.log(form.getFieldsValue());
     return (
-      <div className="card-record-details card-record-details--clinical-notes">
+      <div className="card-record-details card-record-details--treatment-plans">
         <div className="header">
           <div className="title">Treatment Plans</div>
         </div>
@@ -183,6 +229,17 @@ class TreatmentPlansEdit extends React.Component<Props, State> {
           <Space h={4} />
           <Divider />
           {this.renderProcedures()}
+          <Divider />
+          <Row type="flex" className="fields fields--edit">
+            <Col md={8}>
+              <ProcedureSearchInput
+                placeholder="Enter Procedure Name"
+                onSelect={this.onNewProcedureSelect}
+                name="ISearchProcedure"
+                getFieldDecorator={getFieldDecorator}
+              />
+            </Col>
+          </Row>
         </div>
         <div className="footer">
           <div className="left">
@@ -230,9 +287,9 @@ const mapStateToProps = state => ({
   charts: state.Charts,
 });
 const mapDispatchToProps = dispatch => ({
-  updateClinicalNotes: data => dispatch(updateClinicalNotes(data)),
+  updateTreatmentPlans: data => dispatch(updateTreatmentPlans(data)),
   fetchAppointment: id => dispatch(fetchAppointment(id)),
   toggleDoneAction: () => dispatch(toggleDoneAction()),
-  deleteClinicalNotes: appointmentId => dispatch(deleteClinicalNotes(appointmentId)),
+  deleteTreatmentPlans: appointmentId => dispatch(deleteTreatmentPlans(appointmentId)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Wrapped);
