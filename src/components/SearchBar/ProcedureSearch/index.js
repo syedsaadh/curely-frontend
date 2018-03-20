@@ -5,18 +5,26 @@ import { FormComponentProps } from 'antd/lib/form/Form';
 import moment from 'moment';
 import { debounce } from 'lodash';
 import { checkResponseCode, checkStatus } from '../../../utils/ApiUtils';
-import PatientService from '../../../services/patient';
+import ProcedureService from '../../../services/procedures';
 
 const { Option } = AutoComplete;
+
+type ProcedureType = {
+  cost: number,
+  id: number,
+  instruction: null | string,
+  name: string,
+};
+
 interface Props extends FormComponentProps {
   placeholder: string;
-  onSelect: Function;
+  onSelect: (val: ProcedureType) => void;
   onSearch: Function;
   required: boolean;
   disabled?: boolean;
 }
 
-class PatientSearch extends React.Component<Props> {
+class ProcedureSearch extends React.Component<Props> {
   static defaultProps = {
     disabled: false,
   };
@@ -31,7 +39,7 @@ class PatientSearch extends React.Component<Props> {
 
   componentDidMount() {
     this.apiSearch = debounce((val) => {
-      PatientService.searchPatient(val)
+      ProcedureService.searchProcedures(val)
         .then(checkStatus)
         .then(checkResponseCode)
         .then((response) => {
@@ -59,9 +67,6 @@ class PatientSearch extends React.Component<Props> {
     return dataSource.map(item => (
       <Option key={`${item.id}`} value={item.name} valObj={item}>
         {item.name}
-        <span> | P{item.id} </span>
-        <br />
-        <span>{item.dob ? moment(item.dob).format('DD MMM YYYY') : 'No Date Of Birth'}</span>
       </Option>
     ));
   };
@@ -102,5 +107,4 @@ class PatientSearch extends React.Component<Props> {
     );
   }
 }
-
-export default PatientSearch;
+export default ProcedureSearch;
