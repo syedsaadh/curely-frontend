@@ -9,6 +9,7 @@ import Patients from './Patients/reducer';
 import Appointments from './Appointments/reducer';
 import VitalSigns from './VitalSigns/reducer';
 import Charts from './Charting/reducer';
+import Inventory from './Inventory/reducer';
 
 const rootReducer = {
   App,
@@ -22,5 +23,6 @@ const rootReducer = {
   Appointments,
   VitalSigns,
   Charts,
+  Inventory,
 };
 export default rootReducer;
