@@ -2,6 +2,10 @@ import { procedures as _config } from '../config/service/index';
 import { getRequest, postRequest } from './_helper';
 
 class ProceduresService {
+  static searchProcedures(q) {
+    const request = getRequest(_config.baseUrl, `/admin/procedures/search/${q}`, true);
+    return fetch(request);
+  }
   static getAllProcedures() {
     const request = getRequest(_config.baseUrl, '/admin/procedures/all', true);
     return fetch(request);
