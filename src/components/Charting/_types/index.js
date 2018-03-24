@@ -37,6 +37,13 @@ type Procedure = {
   procedure_discount: Number,
   notes: String,
 };
+type LabTest = {
+  id: String,
+  appointment_id: Number,
+  lab_test_id: Number,
+  lab_test_name: String,
+  instruction: String,
+};
 type Appointment = {
   id: Number,
   patient_id: Number,
