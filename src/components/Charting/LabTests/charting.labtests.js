@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import LabTestsDetail from './charting.labtests.details';
 import LabTestsEdit from './charting.labtests.edit';
-import { Procedure } from '../_types';
+import { LabTest } from '../_types';
 import './style.labtests.less';
 
 type Props = {
-  data: Array<Procedure>,
+  data: Array<LabTest>,
 };
 class LabTestsSection extends React.Component<Props> {
   state = {

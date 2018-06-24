@@ -6,6 +6,10 @@ class ProceduresService {
     const request = getRequest(_config.baseUrl, '/admin/users/all', true);
     return fetch(request);
   }
+  static getAllDoctors() {
+    const request = getRequest(_config.baseUrl, '/admin/users/doctors', true);
+    return fetch(request);
+  }
   static addStaff(data) {
     const request = postRequest(_config.baseUrl, '/admin/users/createStaff', data);
     return fetch(request);

@@ -58,10 +58,8 @@ class SignInPage extends React.Component<Props> {
         <div className="form-section">
           <div className="__header">
             <h3 className="title">Sign In</h3>
-            <p className="desc">Sign in to your account with your email or IRIS Id.</p>
-            <p className="desc">
-              New? <Link to="/signup"> Create an account</Link>
-            </p>
+            <p className="desc">Sign in to your account.</p>
+            <p className="desc" />
             <p className="desc">{error ? this.renderAlert(error.message) : null}</p>
           </div>
           <div className="__form-wrapper">

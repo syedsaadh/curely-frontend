@@ -3,7 +3,6 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
 import { connect } from 'react-redux';
 import App from './containers/App/App';
-import DevTools from './containers/DevTools';
 import { SignInPage, BrandingPage } from './containers/Page';
 import './styles/styles.less';
 
@@ -28,7 +27,6 @@ const RestrictedRoute = ({ component: Component, isLoggedIn, ...rest }) => (
 const PublicRoutes = ({ history, isLoggedIn }) => (
   <ConnectedRouter history={history}>
     <div>
-      {process.env.NODE_ENV === 'production' ? '' : <DevTools />}
       <Switch>
         <Route exact path="/" component={BrandingPage} />
         <Route exact path="/signin" component={SignInPage} />

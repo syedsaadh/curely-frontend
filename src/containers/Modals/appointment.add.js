@@ -188,7 +188,7 @@ class AppointmentModal extends React.Component<Props> {
           <Col md={12}>
             <Input
               rules={{
-                pattern: '^[2-9]{2}[0-9]{8}$',
+                pattern: '^[2-9]{1}[0-9]{9}$',
                 message: 'Phone Number is Incorrect',
               }}
               validatorMessage="Phone Number is Incorrect"

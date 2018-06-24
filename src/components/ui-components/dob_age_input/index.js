@@ -40,7 +40,6 @@ class CustomInput extends React.Component<Props, State> {
     if (dobValue) this.setDobValues(dobValue);
   }
   componentWillReceiveProps(nextProps) {
-    console.log(this.props, nextProps);
     const { dobValue } = nextProps;
     if (dobValue && this.props.dobValue !== dobValue) {
       this.setDobValues(dobValue);

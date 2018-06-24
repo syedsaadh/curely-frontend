@@ -39,6 +39,24 @@ function CustomInput(props: Props) {
     optionLabelProp,
   } = props;
   const crules = [{ required, message: validatorMessage }];
+  if (!getFieldDecorator) {
+    return (
+      <Select
+        defaultValue={defaultValue}
+        disabled={disabled}
+        onSelect={onSelect}
+        optionLabelProp={optionLabelProp}
+        placeholder={placeholder}
+        style={{ width: 'auto' }}
+      >
+        {values.map((item, index) => (
+          <Option key={index} label={item.label} value={item.value}>
+            {item.label}
+          </Option>
+        ))}
+      </Select>
+    );
+  }
   return (
     <FormItem label={label}>
       {!getFieldDecorator ||

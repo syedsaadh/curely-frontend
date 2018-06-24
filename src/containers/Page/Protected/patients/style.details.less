@@ -1,0 +1,123 @@
+.charting-container {
+  .header {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.patient-content {
+  padding: 16px 24px;
+  .appointments-timeline {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    .timeline-item {
+      padding-top: 30px;
+      padding-left: 30px;
+      position: relative;
+      background-color: inherit;
+      &::before {
+        left: 0px;
+        content: "";
+        position: absolute;
+        width: 2px;
+        background-color: #dfdfdf;
+        top: 0px;
+        bottom: 0;
+      }
+      &::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        left: -9px;
+        background-color: @primary-color;
+        top: 48px;
+        border-radius: 50%;
+        z-index: 1;
+      }
+    }
+    .timeline-item:last-child::before {
+      height: 48px;
+    }
+    .timeline-item:first-child::before {
+      top: 48px;
+    }
+  }
+  .admissions-timeline {
+    .timeline-item {
+      padding-left: 60px;
+    }
+  }
+}
+.admissions-timeline-item-container {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  .admissions-timeline-item {
+    padding-top: 30px;
+    padding-left: 30px;
+    position: relative;
+    background-color: inherit;
+    &::before {
+      left: 0px;
+      content: "";
+      position: absolute;
+      width: 2px;
+      background-color: #dfdfdf;
+      top: 0px;
+      bottom: 0;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      left: -9px;
+      background-color: @primary-color;
+      top: 48px;
+      border-radius: 50%;
+      z-index: 1;
+    }
+  }
+  .admissions-timeline-item:nth-child(1)::before {
+    top: 48px;
+  }
+}
+.admissions-timeline-item {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  > .header {
+    display: flex;
+    border: 1px solid #ebebeb;
+    font-size: 13px;
+    .admit-date,
+    .discharge-date {
+      padding: 12px;
+      text-align: center;
+      border-left: 1px solid #ebebeb;
+      .date-day {
+        font-size: 14px;
+      }
+    }
+    .admit-basic-info {
+      padding: 12px;
+      border-left: 1px solid #ebebeb;
+      flex: 1;
+      line-height: 1.2;
+    }
+    .actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 16px;
+    }
+  }
+  > .body {
+    padding: 14px 0;
+    .timeline-item {
+      padding-bottom: 16px;
+    }
+  }
+}

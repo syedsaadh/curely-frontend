@@ -2,8 +2,28 @@ import { ipd as _config } from '../config/service/index';
 import { getRequest, postRequest } from './_helper';
 
 class IPDChartingService {
+  static getAdmissionVisits(patientId) {
+    const request = getRequest(
+      _config.baseUrl,
+      `/admin/ipd/getAdmissionsVisits/${patientId}`,
+      true,
+    );
+    return fetch(request);
+  }
+  static addVisit(data) {
+    const request = postRequest(_config.baseUrl, '/admin/ipd/visit/add', data);
+    return fetch(request);
+  }
+  static editVisit(data) {
+    const request = postRequest(_config.baseUrl, '/admin/ipd/visit/edit', data);
+    return fetch(request);
+  }
   static updateVitalSigns(data) {
     const request = postRequest(_config.baseUrl, '/admin/ipd/vitalsigns/update', data);
+    return fetch(request);
+  }
+  static deleteVisit(id) {
+    const request = getRequest(_config.baseUrl, `/admin/ipd/visit/delete/${id}`, true);
     return fetch(request);
   }
   static deleteVitalSigns(ipdAdmissionId) {

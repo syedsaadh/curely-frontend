@@ -53,6 +53,8 @@ class PatientModal extends React.Component<Props> {
         if (values.dob) {
           values.dob = moment(values.dob).format('YYYY-MM-DD');
           values.age = null;
+        } else {
+          values.dob = null;
         }
         values.id = id;
         this.props.editPatient(values);

@@ -13,6 +13,10 @@ import AppointmentEdit from './appointment.edit';
 import AppointmentReschedule from './appointment.reschedule';
 import AppointmentCancel from './appointment.cancel';
 import AppointmentDelete from './appointment.delete';
+import DrugCatalogAdd from './DrugCatalog/DrugCatalog.add';
+import PatientAdmit from './IPD/patient.admit';
+import VisitAdd from './IPD/visit.add';
+import VisitEdit from './IPD/visit.edit';
 
 export {
   DepartmentAdd,
@@ -30,4 +34,8 @@ export {
   AppointmentReschedule,
   AppointmentCancel,
   AppointmentDelete,
+  DrugCatalogAdd,
+  PatientAdmit,
+  VisitAdd,
+  VisitEdit,
 };

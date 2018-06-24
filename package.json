@@ -31,7 +31,8 @@
     "react-throttle": "^0.3.0",
     "react-window-resize-listener": "^1.1.0",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "scroll-into-view": "^1.9.3"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.2",

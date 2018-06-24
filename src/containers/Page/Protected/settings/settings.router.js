@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { Labs, Departments, Procedures, PracticeStaff } from '../../index';
+import { Labs, Departments, Procedures, PracticeStaff, DrugCatalog } from '../../index';
 
 type Props = {
   url: string,
@@ -15,6 +15,7 @@ function IRouter(props: Props) {
       <Route exact path={`${url}/labs`} component={Labs} />
       <Route exact path={`${url}/procedures`} component={Procedures} />
       <Route exact path={`${url}/practicestaff`} component={PracticeStaff} />
+      <Route exact path={`${url}/drugcatalog`} component={DrugCatalog} />
     </Switch>
   );
 }

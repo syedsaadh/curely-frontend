@@ -10,8 +10,21 @@ class IPDAdmissionService {
     );
     return fetch(request);
   }
+  static getVisit(id) {
+    const request = getRequest(_config.baseUrl, `/admin/ipd/visit/get/${id}`, true);
+    return fetch(request);
+  }
   static getAdmission(ipdAdmissionId) {
     const request = getRequest(_config.baseUrl, `/admin/ipd/get/${ipdAdmissionId}`, true);
+    return fetch(request);
+  }
+  static getAdmittedPatientsByDept(deptId) {
+    const request = getRequest(_config.baseUrl, `/admin/ipd/admitted/${deptId}`, true);
+    return fetch(request);
+  }
+
+  static getAvailableBeds(deptId) {
+    const request = getRequest(_config.baseUrl, `/admin/ipd/getAvailableBeds/${deptId}`, true);
     return fetch(request);
   }
   static addAdmission(data) {
@@ -24,6 +37,10 @@ class IPDAdmissionService {
   }
   static cancelAdmission(data) {
     const request = postRequest(_config.baseUrl, '/admin/ipd/delete', data);
+    return fetch(request);
+  }
+  static dischargeAdmission(data) {
+    const request = postRequest(_config.baseUrl, '/admin/ipd/discharge', data);
     return fetch(request);
   }
 }

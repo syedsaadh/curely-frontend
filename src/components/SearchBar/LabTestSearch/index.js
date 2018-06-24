@@ -1,12 +1,11 @@
 import React from 'react';
-import { AutoComplete, Icon } from 'antd';
-import { debounce } from 'lodash';
+import { Select, Spin } from 'antd';
 import { FormComponentProps } from 'antd/lib/form/Form';
-import { Input } from '../../ui-components';
+import { debounce } from 'lodash';
 import { checkResponseCode, checkStatus } from '../../../utils/ApiUtils';
-import LabTestsService from '../../../services/labtests';
+import LabTestService from '../../../services/labtests';
 
-const { Option } = AutoComplete;
+const { Option } = Select;
 
 type LabTestType = {
   id: number,
@@ -18,18 +17,10 @@ interface Props extends FormComponentProps {
   placeholder: string;
   onSelect: (val: LabTestType) => void;
   onSearch: Function;
-  required: boolean;
   disabled?: boolean;
 }
 
-class LabTestSearch extends React.Component<Props> {
-  static defaultProps = {
-    disabled: false,
-  };
-  constructor() {
-    super();
-    this.onSearch = this.onSearch.bind(this);
-  }
+class SearchInput extends React.Component<Props> {
   state = {
     dataSource: [],
     loading: false,
@@ -37,7 +28,7 @@ class LabTestSearch extends React.Component<Props> {
 
   componentDidMount() {
     this.apiSearch = debounce((val) => {
-      LabTestsService.searchLabTest(val)
+      LabTestService.searchLabTest(val)
         .then(checkStatus)
         .then(checkResponseCode)
         .then((response) => {
@@ -54,55 +45,44 @@ class LabTestSearch extends React.Component<Props> {
         });
     }, 500);
   }
-  onSearch(val) {
+
+  onSearch = (val) => {
+    this.setState({ val });
     if (this.props.onSearch) this.props.onSearch(val);
     if (val.length < 2) return;
     this.setState({ loading: true });
     this.apiSearch(val);
-  }
+  };
   renderOptions = () => {
     const { dataSource } = this.state;
-    return dataSource.map(item => (
+    return dataSource.map((item: LabTestService) => (
       <Option key={`${item.id}`} value={item.name} valObj={item}>
         {item.name}
       </Option>
     ));
   };
   render() {
-    const {
-      placeholder,
-      onSelect,
-      required,
-      label,
-      getFieldDecorator,
-      name,
-      disabled,
-    } = this.props;
-    const { loading } = this.state;
+    const { placeholder, onSelect, disabled } = this.props;
     return (
-      <AutoComplete
+      <Select
+        disabled={disabled}
+        mode="combobox"
         style={{ width: '100%' }}
-        className="autocomplete-search-bar"
-        dropdownClassName="autocomplete-search-dropdown"
-        dataSource={this.renderOptions()}
+        optionLabelProp="value"
+        value={this.state.val}
+        placeholder={placeholder}
+        defaultActiveFirstOption={false}
+        showArrow={false}
+        filterOption={false}
+        notFoundContent={this.state.loading ? <Spin size="small" /> : null}
+        onChange={this.onSearch}
         onSelect={(val, opt) => {
           onSelect(opt.props.valObj);
         }}
-        optionLabelProp="value"
-        disabled={disabled}
       >
-        <Input
-          autoComplete={false}
-          label={label}
-          required={required}
-          placeholder={placeholder}
-          name={name}
-          getFieldDecorator={getFieldDecorator}
-          suffix={loading ? <Icon type="loading" /> : null}
-          onValueChange={this.onSearch}
-        />
-      </AutoComplete>
+        {this.renderOptions()}
+      </Select>
     );
   }
 }
-export default LabTestSearch;
+export default SearchInput;

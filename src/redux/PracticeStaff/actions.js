@@ -7,6 +7,10 @@ export const actions = {
   PRACTICE_STAFF_FETCH_ALL_SUCCESS: 'PRACTICE_STAFF_FETCH_ALL_SUCCESS',
   PRACTICE_STAFF_FETCH_ALL_FAILED: 'PRACTICE_STAFF_FETCH_ALL_FAILED',
 
+  PRACTICE_STAFF_FETCH_DOCTORS_REQUEST: 'PRACTICE_STAFF_FETCH_DOCTORS_REQUEST',
+  PRACTICE_STAFF_FETCH_DOCTORS_SUCCESS: 'PRACTICE_STAFF_FETCH_DOCTORS_SUCCESS',
+  PRACTICE_STAFF_FETCH_DOCTORS_FAILED: 'PRACTICE_STAFF_FETCH_DOCTORS_FAILED',
+
   PRACTICE_STAFF_ADD_REQUEST: 'PRACTICE_STAFF_ADD_REQUEST',
   PRACTICE_STAFF_ADD_SUCCESS: 'PRACTICE_STAFF_ADD_SUCCESS',
   PRACTICE_STAFF_ADD_FAILED: 'PRACTICE_STAFF_ADD_FAILED',
@@ -32,6 +36,18 @@ export const fetchAllSuccess = data => ({
 });
 export const fetchAllFailed = error => ({
   type: actions.PRACTICE_STAFF_FETCH_ALL_FAILED,
+  payload: error,
+});
+
+export const fetchDoctorsRequest = () => ({
+  type: actions.PRACTICE_STAFF_FETCH_DOCTORS_REQUEST,
+});
+export const fetchDoctorsSuccess = data => ({
+  type: actions.PRACTICE_STAFF_FETCH_DOCTORS_SUCCESS,
+  payload: data,
+});
+export const fetchDoctorsFailed = error => ({
+  type: actions.PRACTICE_STAFF_FETCH_DOCTORS_FAILED,
   payload: error,
 });
 
@@ -93,7 +109,19 @@ export const fetchAll = () => (dispatch) => {
       dispatch(fetchAllFailed(error));
     });
 };
-
+export const fetchDoctors = () => (dispatch) => {
+  dispatch(fetchDoctorsRequest());
+  service
+    .getAllDoctors()
+    .then(checkStatus)
+    .then(checkResponseCode)
+    .then((response) => {
+      dispatch(fetchDoctorsSuccess(response.Payload));
+    })
+    .catch((error) => {
+      dispatch(fetchDoctorsFailed(error));
+    });
+};
 export const addStaff = data => (dispatch) => {
   dispatch(addRequest());
   service

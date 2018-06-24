@@ -2,6 +2,10 @@ import { labtests as _config } from '../config/service/index';
 import { getRequest, postRequest } from './_helper';
 
 class LabTestsService {
+  static searchLabTest(q) {
+    const request = getRequest(_config.baseUrl, `/admin/labtests/search/${q}`, true);
+    return fetch(request);
+  }
   static getAllLabTests() {
     const request = getRequest(_config.baseUrl, '/admin/labtests/all', true);
     return fetch(request);

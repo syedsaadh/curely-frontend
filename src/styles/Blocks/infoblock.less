@@ -1,0 +1,104 @@
+.info-container--flex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .item-info {
+        flex-basis: 48%;
+        @media @mobile {
+            flex-basis: 100%;
+        }
+    }
+}
+
+.info-container-actions {
+    display: flex;
+    .btn {
+        margin-left: 8px;
+    }
+}
+
+.item-info {
+    float: left;
+    margin-top: 20px;
+    .secondary-header {
+        background: #eeeff3;
+        .title {
+            text-transform: uppercase;
+            color: darken(#bbbdcf, 10%);
+            padding: 8px 0;
+            margin-left: 10px;
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 400;
+        }
+    }
+    .empty-label {
+        text-align: center;
+        padding: 24px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .info-block {
+        clear: both;
+        margin-top: 20px;
+        font-size: 14px;
+        .name {
+            display: inline-block;
+            width: 120px;
+            font-size: 12px;
+            text-align: right;
+            color: #bbbdcf;
+            margin-right: 20px;
+            vertical-align: top;
+        }
+        .value {
+            display: inline-block;
+            text-align: left;
+            font-weight: 500;
+        }
+        @media @mobile {
+            display: flex;
+            flex-direction: column;
+            .name {
+                width: 100%;
+                text-align: left;
+            }
+        }
+        &.info-block--editable {
+            .ant-row.ant-form-item {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                clear: both;
+                .ant-form-item-label {
+                    overflow-wrap: break-word;
+                    white-space: normal;
+                    width: 120px;
+                    text-align: right;
+                    color: #bbbdcf;
+                    margin-right: 20px;
+                    line-height: 20px;
+                    label {
+                        font-size: 14px;
+                    }
+                }
+                .ant-form-item-control-wrapper {
+                    max-width: 300px;
+                    text-align: left;
+                    font-weight: 500;
+                    flex: 1;
+                    input,
+                    textarea {
+                        font-size: 14px !important;
+                    }
+                }
+            }
+            .extra-info {
+                margin-left: 140px;
+                max-width: 300px;
+                line-height: 1.2;
+            }
+        }
+    }
+}

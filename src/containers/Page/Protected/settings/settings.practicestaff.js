@@ -68,7 +68,7 @@ class PracticeStaff extends React.Component<Props, State> {
     {
       title: 'ACCESS TYPE',
       dataIndex: 'role',
-      render: text => <span>{text.toUpperCase()}</span>,
+      render: text => <span>{text ? text.toUpperCase() : null}</span>,
     },
     {
       title: 'Actions',

@@ -60,4 +60,35 @@ type Appointment = {
   completed_procedures: Array<CompletedProcedure>,
   treatment_plans: Array<Procedure>,
 };
-export { Appointment, VitalSignType, CompletedProcedure, Procedure, VitalSignField, ClinicalNotes };
+type Drug = {
+  id: Number,
+  name: String,
+  drug_type: String,
+  default_dosage: String | null,
+  default_dosage_unit: String | null,
+  instruction: String | null,
+};
+type Prescription = {
+  id: Number,
+  appointment_id: Number,
+  drug_id: Number,
+  intake: String,
+  frequency: String,
+  display_frequency: String,
+  food_precedence: String,
+  duration: Number,
+  duration_unit: String,
+  instruction: String | null,
+  drug: Drug,
+};
+export {
+  Appointment,
+  VitalSignType,
+  CompletedProcedure,
+  Procedure,
+  VitalSignField,
+  ClinicalNotes,
+  LabTest,
+  Prescription,
+  Drug,
+};

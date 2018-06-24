@@ -6,9 +6,12 @@ import Departments from './Protected/settings/settings.departments';
 import Labs from './Protected/settings/settings.labs';
 import Procedures from './Protected/settings/settings.procedure';
 import PracticeStaff from './Protected/settings/settings.practicestaff';
+import DrugCatalog from './Protected/settings/settings.drugcatalog';
 import Patients from './Protected/patients';
 import Calendar from './Protected/calendar';
 import Components from './components';
+import Inventory from './Protected/inventory';
+import IPDManage from './Protected/ipdmanage';
 
 export {
   BlankPage,
@@ -22,4 +25,7 @@ export {
   Patients,
   Calendar,
   Components,
+  Inventory,
+  DrugCatalog,
+  IPDManage,
 };

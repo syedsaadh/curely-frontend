@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { BlankPage, Settings, Patients, Calendar, Components } from '../Page/';
+import { Settings, Patients, Calendar, Components, Inventory, IPDManage } from '../Page/';
 
 type Props = {
   url: string,
@@ -15,6 +15,8 @@ function AppRouter(props: Props) {
       <Route path={`${url}/settings`} component={Settings} />
       <Route path={`${url}/calendar`} component={Calendar} />
       <Route path={`${url}/components`} component={Components} />
+      <Route path={`${url}/inventory`} component={Inventory} />
+      <Route path={`${url}/ipd`} component={IPDManage} />
     </Switch>
   );
 }

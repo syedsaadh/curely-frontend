@@ -96,12 +96,77 @@ export default function reducer(state: State = initState, action: Action) {
       if (!selected) return { ...state };
       const fetchedData = action.payload;
       const index = findIndex(selected.appointments, o => o.id === fetchedData.id);
-      console.log(index, 'Index Found', fetchedData, selected);
       if (index >= 0) selected.appointments[index] = fetchedData;
       return {
         ...state,
         isFetching: false,
         selected,
+      };
+    }
+    case 'VISIT_FETCH_SUCCESS': {
+      const selected = { ...state.selected };
+      if (!selected) return { ...state };
+      const fetchedData = action.payload;
+      const index = findIndex(selected.admissions, o => o.id === fetchedData.ipd_admission_id);
+      if (index >= 0) {
+        const indexVisit = findIndex(
+          selected.admissions[index].visits,
+          o => o.id === fetchedData.id,
+        );
+        selected.admissions[index].visits[indexVisit] = fetchedData;
+      }
+      return {
+        ...state,
+        isFetching: false,
+        selected,
+      };
+    }
+    case types.SORT_PATIENTS_BY_ID: {
+      const allPatients = sortBy([...state.all], ['id']);
+      const recent = [];
+      const today = [];
+      each(allPatients, (patient) => {
+        const createdDate = moment.utc(patient.created_at).local();
+        if (createdDate.isValid()) {
+          if (createdDate.diff(moment(), 'days') <= 0 && createdDate.diff(moment(), 'days') > -3) {
+            recent.push(patient);
+          }
+          if (createdDate.isSame(new Date(), 'day')) {
+            today.push(patient);
+          }
+        }
+      });
+      return {
+        ...state,
+        isFetching: false,
+        all: allPatients,
+        recent,
+        today,
+        doneAction: 'fetch',
+      };
+    }
+    case types.SORT_PATIENTS_BY_NAME: {
+      const allPatients = sortBy([...state.all], ['name']);
+      const recent = [];
+      const today = [];
+      each(allPatients, (patient) => {
+        const createdDate = moment.utc(patient.created_at).local();
+        if (createdDate.isValid()) {
+          if (createdDate.diff(moment(), 'days') <= 0 && createdDate.diff(moment(), 'days') > -3) {
+            recent.push(patient);
+          }
+          if (createdDate.isSame(new Date(), 'day')) {
+            today.push(patient);
+          }
+        }
+      });
+      return {
+        ...state,
+        isFetching: false,
+        all: allPatients,
+        recent,
+        today,
+        doneAction: 'fetch',
       };
     }
     case types.TOGGLE_DONE_ACTION: {

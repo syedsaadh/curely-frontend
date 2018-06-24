@@ -30,7 +30,7 @@ class Sidebar extends React.Component {
           </a>
         </div>
         <Menu className="sidebar-menu" theme="dark" defaultSelectedKeys={[]} mode="inline">
-          <Menu.Item key="1">
+          <Menu.Item key="dashboard.home">
             <a href="/dashboard">
               <Icon>
                 <icon className="ion-home" />
@@ -38,7 +38,7 @@ class Sidebar extends React.Component {
               <span>Home</span>
             </a>
           </Menu.Item>
-          <Menu.Item key="patients">
+          <Menu.Item key="dashboard.patients">
             <a href="/dashboard/patients">
               <Icon>
                 <icon className="ion-ios-list-outline" />
@@ -46,7 +46,23 @@ class Sidebar extends React.Component {
               <span>Patients</span>
             </a>
           </Menu.Item>
-          <Menu.Item key="2">
+          <Menu.Item key="dashboard.inventory">
+            <a href="/dashboard/inventory">
+              <Icon>
+                <icon className="ion-clipboard" />
+              </Icon>
+              <span>Inventory</span>
+            </a>
+          </Menu.Item>
+          <Menu.Item key="dashboard.ipdmanage">
+            <a href="/dashboard/ipd">
+              <Icon>
+                <icon className="ion-clipboard" />
+              </Icon>
+              <span>IPD Manage</span>
+            </a>
+          </Menu.Item>
+          <Menu.Item key="dashboard.profile">
             <a href="/dashboard/profile">
               <Icon>
                 <icon className="ion-person" />
@@ -54,18 +70,10 @@ class Sidebar extends React.Component {
               <span>My Profile</span>
             </a>
           </Menu.Item>
-          <Menu.Item key="3">
+          <Menu.Item key="dashboard.settings">
             <a href="/dashboard/settings">
               <Icon>
                 <icon className="ion-gear-b" />
-              </Icon>
-              <span>Settings</span>
-            </a>
-          </Menu.Item>
-          <Menu.Item key="4">
-            <a href="/dashboard/components">
-              <Icon>
-                <icon className="ion-ionic" />
               </Icon>
               <span>Settings</span>
             </a>

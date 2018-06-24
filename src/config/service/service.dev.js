@@ -10,6 +10,9 @@ const labtests = {
 const procedures = {
   baseUrl: 'http://127.0.0.1:8000/api',
 };
+const drugcatalog = {
+  baseUrl: 'http://127.0.0.1:8000/api',
+};
 const practicestaff = {
   baseUrl: 'http://127.0.0.1:8000/api',
 };
@@ -25,6 +28,12 @@ const vitalsigns = {
 const charts = {
   baseUrl: 'http://127.0.0.1:8000/api',
 };
+const ipd = {
+  baseUrl: 'http://127.0.0.1:8000/api',
+};
+const inventory = {
+  baseUrl: 'http://127.0.0.1:8000/api',
+};
 module.exports = {
   session,
   department,
@@ -35,4 +44,7 @@ module.exports = {
   patient,
   vitalsigns,
   charts,
+  inventory,
+  ipd,
+  drugcatalog,
 };

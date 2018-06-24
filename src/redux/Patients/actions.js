@@ -23,6 +23,9 @@ export const actions = {
   PATIENT_DELETE_SUCCESS: 'PATIENT_DELETE_SUCCESS',
   PATIENT_DELETE_FAILED: 'PATIENT_DELETE_FAILED',
 
+  SORT_PATIENTS_BY_NAME: 'SORT_PATIENTS_BY_NAME',
+  SORT_PATIENTS_BY_ID: 'SORT_PATIENTS_BY_ID',
+
   SELECT_PATIENT: 'SELECT_PATIENT',
   TOGGLE_DONE_ACTION: 'TOGGLE_DONE_ACTION',
 };
@@ -94,6 +97,13 @@ export const selectPatient = data => ({
 
 export const toggleDoneAction = () => ({
   type: actions.TOGGLE_DONE_ACTION,
+});
+
+export const sortByName = () => ({
+  type: actions.SORT_PATIENTS_BY_NAME,
+});
+export const sortById = () => ({
+  type: actions.SORT_PATIENTS_BY_ID,
 });
 
 export const fetchAll = () => (dispatch) => {

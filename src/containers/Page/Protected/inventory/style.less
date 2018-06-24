@@ -1,0 +1,39 @@
+@import "../../../../styles/base.less";
+.inventory-page {
+}
+
+.inventory-page__header {
+  height: 60px;
+  display: flex;
+  background: rgb(255, 255, 255);
+  padding: 16px;
+  align-items: center;
+  border-bottom: 1px solid #e4e4e4;
+  .left {
+    margin-right: auto;
+  }
+  .center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .right {
+    margin-left: auto;
+  }
+  .actions {
+    display: flex;
+    .action-item {
+      margin-right: 8px;
+    }
+  }
+  .heading {
+    font-size: 24px;
+    font-weight: 400;
+  }
+}
+
+.inventory-page__body {
+  height: calc(~"100vh - 120px");
+  overflow-y: auto;
+  padding: 0px 16px 40px 16px;
+  background: white;
+}

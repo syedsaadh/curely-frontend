@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Menu, Dropdown } from 'antd';
+import { Button, Menu, Dropdown, Popconfirm } from 'antd';
 import moment from 'moment';
 import { Appointment } from './_types';
 import VitalSign from './Vital Signs/charting.vitalsigns';
@@ -11,6 +11,10 @@ import TreatmentPlans from './TreatmentPlans/charting.treatmentplans';
 import TreatmentPlansAdd from './TreatmentPlans/charting.treatmentplans.new';
 import CompletedProcedures from './CompletedProcedures/charting.completedprocedures';
 import CompletedProceduresAdd from './CompletedProcedures/charting.completedprocedures.new';
+import LabOrders from './LabTests/charting.labtests';
+import LabOrdersAdd from './LabTests/charting.labtests.new';
+import Prescription from './Prescriptions/charting.prescription';
+import PrescriptionAdd from './Prescriptions/charting.prescription.new';
 
 import './style.less';
 
@@ -43,6 +47,14 @@ class Charting extends React.Component<Props> {
       }
       case 'completedProcedures': {
         addComponent = 'CompletedProceduresAdd';
+        break;
+      }
+      case 'labOrders': {
+        addComponent = 'LabOrdersAdd';
+        break;
+      }
+      case 'prescriptions': {
+        addComponent = 'PrescriptionAdd';
         break;
       }
       default:
@@ -89,10 +101,12 @@ class Charting extends React.Component<Props> {
         <div>
           {data.vital_signs ? <VitalSign data={data.vital_signs} /> : null}
           {data.clinical_notes ? <ClinicalNotes data={data.clinical_notes} /> : null}
+          {data.prescriptions.length > 0 ? <Prescription data={data.prescriptions} /> : null}
           {data.treatment_plans.length > 0 ? <TreatmentPlans data={data.treatment_plans} /> : null}
           {data.completed_procedures.length > 0 ? (
             <CompletedProcedures data={data.completed_procedures} />
           ) : null}
+          {data.lab_orders.length > 0 ? <LabOrders data={data.lab_orders} /> : null}
         </div>
       );
     }
@@ -107,6 +121,12 @@ class Charting extends React.Component<Props> {
     }
     if (isAddingComponent === 'CompletedProceduresAdd') {
       return <CompletedProceduresAdd onCancel={this.onCancelAdd} appointmentId={data.id} />;
+    }
+    if (isAddingComponent === 'LabOrdersAdd') {
+      return <LabOrdersAdd onCancel={this.onCancelAdd} appointmentId={data.id} />;
+    }
+    if (isAddingComponent === 'PrescriptionAdd') {
+      return <PrescriptionAdd onCancel={this.onCancelAdd} appointmentId={data.id} />;
     }
   };
   render() {
@@ -124,22 +144,32 @@ class Charting extends React.Component<Props> {
             </div>
           </div>
           <div className="charting-basic-info">
-            <div>
-              Appointment with <span>Saad Hassan</span>
-            </div>
+            <div>Appointment</div>
             <div>
               {moment(data.scheduled_from).format('hh:mm a')} for{' '}
               {moment(data.scheduled_to).diff(moment(data.scheduled_from), 'minutes')} minutes
             </div>
           </div>
           <div className="charting-actions">
-            {!isAdding ? (
-              <Dropdown overlay={this.renderMenu()} placement="bottomRight">
-                <Button>
-                  Add Records &nbsp;&nbsp;<i className="ion-ios-arrow-down" />
-                </Button>
-              </Dropdown>
-            ) : null}
+            <Button.Group>
+              {!isAdding ? (
+                <Dropdown overlay={this.renderMenu()} placement="bottomRight">
+                  <Button>
+                    Add Records &nbsp;&nbsp;<i className="ion-ios-arrow-down" />
+                  </Button>
+                </Dropdown>
+              ) : null}
+              <Button icon="edit" />
+              <Popconfirm
+                placement="topRight"
+                title="Are you sure to delete the visit?"
+                onConfirm={() => this.onEditVisit(data)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button style={{ color: 'red' }} icon="delete" />
+              </Popconfirm>
+            </Button.Group>
           </div>
         </div>
         <div className="body">{this.renderBody()}</div>

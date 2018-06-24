@@ -10,6 +10,9 @@ import Appointments from './Appointments/reducer';
 import VitalSigns from './VitalSigns/reducer';
 import Charts from './Charting/reducer';
 import Inventory from './Inventory/reducer';
+import DrugCatalog from './DrugCatalog/reducer';
+import IPDAdmission from './IPD.Admission/reducer';
+import IPDCharting from './IPD.Charting/reducer';
 
 const rootReducer = {
   App,
@@ -24,5 +27,8 @@ const rootReducer = {
   VitalSigns,
   Charts,
   Inventory,
+  DrugCatalog,
+  IPDAdmission,
+  IPDCharting,
 };
 export default rootReducer;

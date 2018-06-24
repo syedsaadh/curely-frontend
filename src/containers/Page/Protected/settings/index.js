@@ -26,6 +26,9 @@ class SettingsPage extends React.Component {
             <Menu.Item key="settings.practicestaff">
               <Link to={`${url}/practicestaff`}>Practice Staff</Link>
             </Menu.Item>
+            <Menu.Item key="settings.drugcatalog">
+              <Link to={`${url}/drugcatalog`}>Drugs Catalog</Link>
+            </Menu.Item>
           </Menu>
         </div>
         <div className="right-container fixed-height">

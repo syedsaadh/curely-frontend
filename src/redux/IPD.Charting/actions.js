@@ -3,6 +3,22 @@ import service from '../../services/ipd.charting';
 import { checkStatus, checkResponseCode } from '../../utils/ApiUtils';
 
 export const actions = {
+  FETCH_VISITS_REQUEST: 'FETCH_VISITS_REQUEST',
+  FETCH_VISITS_SUCCESS: 'FETCH_VISITS_SUCCESS',
+  FETCH_VISITS_FAILED: 'FETCH_VISITS_FAILED',
+
+  ADD_VISIT_REQUEST: 'ADD_VISIT_REQUEST',
+  ADD_VISIT_SUCCESS: 'ADD_VISIT_SUCCESS',
+  ADD_VISIT_FAILED: 'ADD_VISIT_FAILED',
+
+  EDIT_VISIT_REQUEST: 'EDIT_VISIT_REQUEST',
+  EDIT_VISIT_SUCCESS: 'EDIT_VISIT_SUCCESS',
+  EDIT_VISIT_FAILED: 'EDIT_VISIT_FAILED',
+
+  DELETE_VISIT_REQUEST: 'DELETE_VISIT_REQUEST',
+  DELETE_VISIT_SUCCESS: 'DELETE_VISIT_SUCCESS',
+  DELETE_VISIT_FAILED: 'DELETE_VISIT_FAILED',
+
   ADMISSION_VITAL_SIGNS_UPDATE_REQUEST: 'ADMISSION_VITAL_SIGNS_UPDATE_REQUEST',
   ADMISSION_VITAL_SIGNS_UPDATE_SUCCESS: 'ADMISSION_VITAL_SIGNS_UPDATE_SUCCESS',
   ADMISSION_VITAL_SIGNS_UPDATE_FAILED: 'ADMISSION_VITAL_SIGNS_UPDATE_FAILED',
@@ -53,6 +69,54 @@ export const actions = {
 
   TOGGLE_DONE_ACTION: 'TOGGLE_DONE_ACTION',
 };
+
+export const fetchVisitsRequest = () => ({
+  type: actions.FETCH_VISITS_REQUEST,
+});
+export const fetchVisitsSuccess = data => ({
+  type: actions.FETCH_VISITS_SUCCESS,
+  payload: data,
+});
+export const fetchVisitsFailed = error => ({
+  type: actions.FETCH_VISITS_FAILED,
+  payload: error,
+});
+
+export const addVisitRequest = () => ({
+  type: actions.ADD_VISIT_REQUEST,
+});
+export const addVisitSuccess = data => ({
+  type: actions.ADD_VISIT_SUCCESS,
+  payload: data,
+});
+export const addVisitFailed = error => ({
+  type: actions.ADD_VISIT_FAILED,
+  payload: error,
+});
+
+export const editVisitRequest = () => ({
+  type: actions.EDIT_VISIT_REQUEST,
+});
+export const editVisitSuccess = data => ({
+  type: actions.EDIT_VISIT_SUCCESS,
+  payload: data,
+});
+export const editVisitFailed = error => ({
+  type: actions.EDIT_VISIT_FAILED,
+  payload: error,
+});
+
+export const deleteVisitRequest = () => ({
+  type: actions.DELETE_VISIT_REQUEST,
+});
+export const deleteVisitSuccess = data => ({
+  type: actions.DELETE_VISIT_SUCCESS,
+  payload: data,
+});
+export const deleteVisitFailed = error => ({
+  type: actions.DELETE_VISIT_FAILED,
+  payload: error,
+});
 
 export const updateVitalSignsRequest = () => ({
   type: actions.ADMISSION_VITAL_SIGNS_UPDATE_REQUEST,
@@ -195,6 +259,59 @@ export const deleteCompletedProceduresFailed = error => ({
 export const toggleDoneAction = () => ({
   type: actions.TOGGLE_DONE_ACTION,
 });
+
+export const fetchVisits = id => (dispatch) => {
+  dispatch(fetchVisitsRequest());
+  service
+    .getAdmissionVisits(id)
+    .then(checkStatus)
+    .then(checkResponseCode)
+    .then((response) => {
+      dispatch(fetchVisitsSuccess(response.Payload));
+    })
+    .catch((error) => {
+      dispatch(fetchVisitsFailed(error));
+    });
+};
+export const addVisit = data => (dispatch) => {
+  dispatch(addVisitRequest());
+  service
+    .addVisit(data)
+    .then(checkStatus)
+    .then(checkResponseCode)
+    .then((response) => {
+      dispatch(addVisitSuccess(response.Payload));
+    })
+    .catch((error) => {
+      dispatch(addVisitFailed(error));
+    });
+};
+export const editVisit = data => (dispatch) => {
+  dispatch(editVisitRequest());
+  service
+    .editVisit(data)
+    .then(checkStatus)
+    .then(checkResponseCode)
+    .then((response) => {
+      dispatch(editVisitSuccess(response.Payload));
+    })
+    .catch((error) => {
+      dispatch(editVisitFailed(error));
+    });
+};
+export const deleteVisit = id => (dispatch) => {
+  dispatch(deleteVisitRequest());
+  service
+    .deleteVisit(id)
+    .then(checkStatus)
+    .then(checkResponseCode)
+    .then((response) => {
+      dispatch(deleteVisitSuccess(response.Payload));
+    })
+    .catch((error) => {
+      dispatch(deleteVisitFailed(error));
+    });
+};
 export const updateVitalSigns = data => (dispatch) => {
   dispatch(updateVitalSignsRequest());
   service

@@ -14,6 +14,7 @@ type Action = {
 
 const initState = {
   lists: [],
+  doctors: [],
   doneAction: null,
   isFetching: false,
   error: null,
@@ -24,12 +25,14 @@ export default function reducer(state: State = initState, action: Action) {
     case types.PRACTICE_STAFF_ADD_REQUEST:
     case types.PRACTICE_STAFF_EDIT_REQUEST:
     case types.PRACTICE_STAFF_FETCH_ALL_REQUEST:
+    case types.PRACTICE_STAFF_FETCH_DOCTORS_REQUEST:
     case types.PRACTICE_STAFF_DELETE_REQUEST: {
       return { ...state, isFetching: true, error: null };
     }
     case types.PRACTICE_STAFF_ADD_FAILED:
     case types.PRACTICE_STAFF_EDIT_FAILED:
     case types.PRACTICE_STAFF_FETCH_ALL_FAILED:
+    case types.PRACTICE_STAFF_FETCH_DOCTORS_FAILED:
     case types.PRACTICE_STAFF_DELETE_FAILED: {
       return { ...state, isFetching: false, error: action.payload };
     }
@@ -38,6 +41,14 @@ export default function reducer(state: State = initState, action: Action) {
         ...state,
         isFetching: false,
         lists: action.payload,
+        doneAction: 'fetch',
+      };
+    }
+    case types.PRACTICE_STAFF_FETCH_DOCTORS_SUCCESS: {
+      return {
+        ...state,
+        isFetching: false,
+        doctors: action.payload,
         doneAction: 'fetch',
       };
     }

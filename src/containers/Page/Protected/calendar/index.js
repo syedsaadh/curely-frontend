@@ -224,6 +224,15 @@ class CalendarPage extends React.Component {
             </div>
           </div>
           <div className="right">
+            <Button
+              style={{ marginRight: 8 }}
+              onClick={() => {
+                this.setState({ scrollToTime: moment().subtract(50, 'm') }, () =>
+                  this.forceUpdate());
+              }}
+            >
+              Now
+            </Button>
             <Button style={{ marginRight: 8 }} onClick={() => this.toolbar.onNavigate('TODAY')}>
               Today
             </Button>
@@ -244,12 +253,16 @@ class CalendarPage extends React.Component {
           <div className="__calendar-wrapper">
             <Spinner spinning={loading} />
             <DragAndDropCalendar
+              ref={(el) => {
+                this.calendar = el;
+              }}
               defaultView={current_view}
               selectable
               onEventDrop={this.moveEvent}
               events={events}
               step={15}
               timeslots={1}
+              scrollToTime={this.state.scrollToTime}
               formats={{
                 dayFormat: (date, culture, localizer) =>
                   localizer.format(date, 'ddd DD MMM', culture),
