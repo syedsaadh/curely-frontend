@@ -17,6 +17,7 @@ type Props = {
   validatorMessage?: string,
   onPressEnter?: Function,
   suffix?: any,
+  prefix?: any,
   onValueChange: Function,
   autoComplete?: boolean,
 };
@@ -36,6 +37,7 @@ function CustomInput(props: Props) {
     validatorMessage,
     onPressEnter,
     suffix,
+    prefix,
     autoComplete,
     onValueChange,
   } = props;
@@ -61,6 +63,7 @@ function CustomInput(props: Props) {
           disabled={disabled}
           onPressEnter={onPressEnter}
           suffix={suffix}
+          prefix={prefix}
           autoComplete={autoComplete ? 'on' : 'off'}
           onChange={e => onValChange(e.target.value)}
         />)
@@ -73,6 +76,7 @@ function CustomInput(props: Props) {
           disabled={disabled}
           onPressEnter={onPressEnter}
           suffix={suffix}
+          prefix={prefix}
           autoComplete={autoComplete ? 'on' : 'off'}
           onChange={e => onValChange(e.target.value)}
         />
@@ -89,6 +93,7 @@ CustomInput.defaultProps = {
   disabled: false,
   validatorMessage: 'This field is required',
   suffix: null,
+  prefix: null,
   autoComplete: true,
 };
 export default CustomInput;

@@ -21,7 +21,6 @@ interface Props extends FormComponentProps {
 class VisitEditModal extends React.Component<Props> {
   state = {};
   componentWillMount() {
-    console.log(this.props);
     this.props.fetchDoctors();
   }
   componentDidMount() {}

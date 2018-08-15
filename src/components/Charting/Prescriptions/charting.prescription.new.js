@@ -44,17 +44,8 @@ interface Props extends FormComponentProps {
 }
 class LabTestsNew extends React.Component<Props, State> {
   componentWillMount() {
-    const { data, charts } = this.props;
-    const { doneAction } = charts;
     const formData: Array<prescriptionformdata> = [];
-
-    if (doneAction === 'update' || doneAction === 'delete') {
-      message.success('Updated!');
-      this.props.toggleDoneAction();
-      this.props.fetchAppointment(this.props.appointmentId);
-      this.props.onCancel();
-      return;
-    }
+    
     formData.push({
       id: null,
       drug_id: null,

@@ -112,7 +112,7 @@ class InventoryNew extends React.Component<Props> {
               <div className="info-block info-block--editable">
                 <div className="name">Strength</div>
                 <div className="value">
-                  {drug.dosage} {drug.dosage_unit}
+                  {drug.default_dosage} {drug.default_dosage_unit}
                 </div>
               </div>
               <div className="info-block info-block--editable">

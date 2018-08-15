@@ -37,26 +37,14 @@ interface Props extends FormComponentProps {
   appointmentId: Number;
 }
 class LabTestsNew extends React.Component<Props, State> {
-  componentWillMount() {
-    const { charts } = this.props;
-    const { doneAction } = charts;
-    const formData: Array<labtestformdata> = [];
-
-    if (doneAction === 'update' || doneAction === 'delete') {
-      message.success('Updated!');
-      this.props.toggleDoneAction();
-      this.props.fetchAppointment(this.props.appointmentId);
-      this.props.onCancel();
-      return;
-    }
-    formData.push({
+  state = {
+    newdata: [{
       name: null,
       id: null,
       lab_test_id: null,
       delete: 'true',
       instruction: '',
-    });
-    this.setState({ newdata: formData });
+    }]
   }
   componentWillReceiveProps(nextProps: Props) {
     const { form } = nextProps;
@@ -93,7 +81,6 @@ class LabTestsNew extends React.Component<Props, State> {
           newdata,
           o => o.id !== null || (o.id === null && o.delete === false),
         );
-        console.log(formdata);
         this.props.updateLabOrders(formdata);
       }
     });

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Menu, Dropdown, Popconfirm } from 'antd';
+import { Button, Menu, Dropdown, Popconfirm, Alert } from 'antd';
 import moment from 'moment';
 import { Appointment } from './_types';
 import VitalSign from './Vital Signs/charting.vitalsigns';
@@ -15,11 +15,12 @@ import LabOrders from './LabTests/charting.labtests';
 import LabOrdersAdd from './LabTests/charting.labtests.new';
 import Prescription from './Prescriptions/charting.prescription';
 import PrescriptionAdd from './Prescriptions/charting.prescription.new';
-
+import { openModal } from '../../redux/App/actions';
 import './style.less';
 
 type Props = {
   data: Appointment,
+  openModal: openModal,
 };
 
 class Charting extends React.Component<Props> {
@@ -29,6 +30,11 @@ class Charting extends React.Component<Props> {
   };
   onCancelAdd = () => {
     this.setState({ isAdding: false, isAddingComponent: null });
+  };
+  onAppointmentEdit = () => {
+    const { data } = this.props;
+    console.log(data);
+    this.props.openModal('ChartingAppointmentEdit', { data });
   };
   handleMenuClick = (e) => {
     let addComponent;
@@ -131,6 +137,8 @@ class Charting extends React.Component<Props> {
   };
   render() {
     const { data } = this.props;
+    const isCancelled = data.cancelled;
+
     const { isAdding } = this.state;
     return (
       <div className="charting-card">
@@ -150,20 +158,37 @@ class Charting extends React.Component<Props> {
               {moment(data.scheduled_to).diff(moment(data.scheduled_from), 'minutes')} minutes
             </div>
           </div>
+          <div className="charting-feedbacks">
+            {isCancelled ? (
+              <Alert
+                type="error"
+                banner
+                message={
+                  <span>
+                    Appointment Cancelled due to <b>{data.cancel_reason}</b>
+                  </span>
+                }
+              />
+            ) : null}
+          </div>
           <div className="charting-actions">
             <Button.Group>
               {!isAdding ? (
-                <Dropdown overlay={this.renderMenu()} placement="bottomRight">
+                <Dropdown
+                  disabled={isCancelled}
+                  overlay={this.renderMenu()}
+                  placement="bottomRight"
+                >
                   <Button>
                     Add Records &nbsp;&nbsp;<i className="ion-ios-arrow-down" />
                   </Button>
                 </Dropdown>
               ) : null}
-              <Button icon="edit" />
+              <Button icon="edit" onClick={this.onAppointmentEdit} />
               <Popconfirm
                 placement="topRight"
-                title="Are you sure to delete the visit?"
-                onConfirm={() => this.onEditVisit(data)}
+                title="Are you sure to delete the appointment?"
+                onConfirm={() => this.onAppointmentEdit(data)}
                 okText="Yes"
                 cancelText="No"
               >
@@ -178,5 +203,7 @@ class Charting extends React.Component<Props> {
   }
 }
 const mapStateToProps = state => ({});
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  openModal: (name, props) => dispatch(openModal(name, props)),
+});
 export default connect(mapStateToProps, mapDispatchToProps)(Charting);

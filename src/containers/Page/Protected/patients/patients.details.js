@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { Row, Col, Button, Radio } from 'antd';
-import { startCase } from 'lodash';
+import { startCase, orderBy } from 'lodash';
 import { Space, Spinner } from '../../../../components/ui-components';
 import { fetchPatient } from '../../../../redux/Patients/actions';
 import { openModal } from '../../../../redux/App/actions';
@@ -43,6 +43,8 @@ class PatientDetails extends React.Component {
     const { selected } = Patients;
     const isIPD = this.state.type === 'ipd';
     if (!selected) return null;
+    const appointments = orderBy(selected.appointments, ['scheduled_from'], ['desc']);
+    const admissions = orderBy(selected.admissions, ['admitted_on'], ['desc']);
     if (Patients.isFetching) return <Spinner spinning />;
     return (
       <div className="patients-details-container">
@@ -109,7 +111,7 @@ class PatientDetails extends React.Component {
               {!isIPD ? (
                 <div className="appointments-timeline">
                   {selected.appointments
-                    ? selected.appointments.map(item => (
+                    ? appointments.map(item => (
                       <div key={item.id} className="timeline-item">
                         <Charting data={item} />
                       </div>
@@ -120,7 +122,7 @@ class PatientDetails extends React.Component {
               {isIPD ? (
                 <div className="admissions-timeline">
                   {selected.admissions
-                    ? selected.admissions.map((item) => {
+                    ? admissions.map((item) => {
                         const { visits } = item;
                         return (
                           <div key={item.id} className="admissions-timeline-item-container">
@@ -170,7 +172,6 @@ class PatientDetails extends React.Component {
                                     >
                                       Add Visit
                                     </Button>
-                                    <Button icon="edit" />
                                     <Button style={{ color: 'red' }} icon="delete" />
                                   </Button.Group>
                                 </div>

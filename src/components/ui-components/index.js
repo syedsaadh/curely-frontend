@@ -6,8 +6,9 @@ import RadioGroup from './radio';
 import Select from './select';
 import SelectableList from './selectableList';
 import TextArea from './textarea';
-import Spinner from './spinner';
+import { Spinner } from './spinner';
 import Space from './space';
+import DatePicker from './datepicker';
 
 export {
   Divider,
@@ -20,4 +21,5 @@ export {
   DOBInput,
   Spinner,
   Space,
+  DatePicker,
 };

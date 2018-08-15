@@ -17,6 +17,7 @@ import DrugCatalogAdd from './DrugCatalog/DrugCatalog.add';
 import PatientAdmit from './IPD/patient.admit';
 import VisitAdd from './IPD/visit.add';
 import VisitEdit from './IPD/visit.edit';
+import ChartingAppointmentEdit from './Charting/charting.appointment.edit';
 
 export {
   DepartmentAdd,
@@ -38,4 +39,5 @@ export {
   PatientAdmit,
   VisitAdd,
   VisitEdit,
+  ChartingAppointmentEdit,
 };

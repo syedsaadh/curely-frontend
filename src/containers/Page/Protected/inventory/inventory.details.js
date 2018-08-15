@@ -25,6 +25,9 @@ class InventoryDetails extends React.Component<Props> {
   onNewItem = () => {
     this.props.history.push('/dashboard/inventory/new');
   };
+  onAddStock = () => {
+    this.props.history.push('/dashboard/inventory/stock/add');
+  };
   columns = [
     {
       title: 'Name',
@@ -78,7 +81,7 @@ class InventoryDetails extends React.Component<Props> {
             </div>
             <div className="action-item">
               <Button.Group>
-                <Button>Add Stock</Button>
+                <Button onClick={this.onAddStock}>Add Stock</Button>
                 <Button>Consume Stock</Button>
               </Button.Group>
             </div>
