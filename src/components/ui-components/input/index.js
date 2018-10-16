@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { Input, Form } from 'antd';
+import Rules from './rules';
 
 const FormItem = Form.Item;
 type Props = {
@@ -20,6 +21,9 @@ type Props = {
   prefix?: any,
   onValueChange: Function,
   autoComplete?: boolean,
+  horizontalLayout?: boolean,
+  labelCol?: any,
+  wrapperCol?: any,
 };
 
 function CustomInput(props: Props) {
@@ -40,8 +44,17 @@ function CustomInput(props: Props) {
     prefix,
     autoComplete,
     onValueChange,
+    horizontalLayout,
+    labelCol,
+    wrapperCol,
   } = props;
   let onValChange: Function = onValueChange;
+  const layout = horizontalLayout
+    ? {
+      labelCol: labelCol || { span: 10, style: { textAlign: 'left' } },
+      wrapperCol: wrapperCol || { span: 14 },
+    }
+    : {};
   if (!onValChange) onValChange = () => {};
   const crules = [
     {
@@ -51,7 +64,7 @@ function CustomInput(props: Props) {
   ];
   if (rules) crules.push(rules);
   return (
-    <FormItem label={label}>
+    <FormItem {...layout} label={label}>
       {getFieldDecorator ? (
         getFieldDecorator(name, {
           rules: crules,
@@ -96,4 +109,5 @@ CustomInput.defaultProps = {
   prefix: null,
   autoComplete: true,
 };
+CustomInput.rules = Rules;
 export default CustomInput;

@@ -21,6 +21,9 @@ type Props = {
   defaultValue?: string,
   onSelect?: Function,
   optionLabelProp?: string,
+  horizontalLayout?: boolean,
+  labelCol?: any,
+  wrapperCol?: any,
 };
 
 function CustomInput(props: Props) {
@@ -37,8 +40,17 @@ function CustomInput(props: Props) {
     defaultValue,
     onSelect,
     optionLabelProp,
+    horizontalLayout,
+    labelCol,
+    wrapperCol,
   } = props;
   const crules = [{ required, message: validatorMessage }];
+  const layout = horizontalLayout
+    ? {
+      labelCol: labelCol || { span: 10, style: { textAlign: 'left' } },
+      wrapperCol: wrapperCol || { span: 14 },
+    }
+    : {};
   if (!getFieldDecorator) {
     return (
       <Select
@@ -58,7 +70,7 @@ function CustomInput(props: Props) {
     );
   }
   return (
-    <FormItem label={label}>
+    <FormItem {...layout} label={label}>
       {!getFieldDecorator ||
         getFieldDecorator(name, {
           rules: crules,
