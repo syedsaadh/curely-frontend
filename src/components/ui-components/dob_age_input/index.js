@@ -12,6 +12,10 @@ type Props = {
   setFields: Function,
   active: 'dob' | 'age',
   dobValue: moment.Moment,
+  horizontalLayout?: boolean,
+  labelCol?: any,
+  wrapperCol?: any,
+  noAge?: boolean,
 };
 type State = {
   dob: boolean,
@@ -41,6 +45,7 @@ class CustomInput extends React.Component<Props, State> {
   }
   componentWillReceiveProps(nextProps) {
     const { dobValue } = nextProps;
+
     if (dobValue && this.props.dobValue !== dobValue) {
       this.setDobValues(dobValue);
     }
@@ -78,20 +83,38 @@ class CustomInput extends React.Component<Props, State> {
     });
   };
   render() {
-    const { getFieldDecorator, className, size } = this.props;
-
+    const {
+      getFieldDecorator,
+      className,
+      size,
+      horizontalLayout,
+      labelCol,
+      wrapperCol,
+      noAge,
+    } = this.props;
+    const layout = horizontalLayout
+      ? {
+        labelCol: labelCol || { span: 10, style: { textAlign: 'left' } },
+        wrapperCol: wrapperCol || { span: 14 },
+      }
+      : {};
     return (
       <div className="dob-age-input-wrapper">
         <FormItem
+          {...layout}
           label={
             <span>
-              <button className="text-btn" onClick={this.onToggle}>
+              <button className="text-btn" onClick={!noAge ? this.onToggle : null}>
                 DOB
               </button>
-              Or
-              <button className="text-btn" onClick={this.onToggle}>
-                Age
-              </button>
+              {!noAge ? (
+                <span>
+                  Or
+                  <button className="text-btn" onClick={this.onToggle}>
+                    Age
+                  </button>
+                </span>
+              ) : null}
             </span>
           }
         >

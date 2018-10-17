@@ -17,6 +17,9 @@ type Props = {
   getFieldDecorator?: Function,
   disabled?: boolean,
   validatorMessage?: string,
+  horizontalLayout?: boolean,
+  labelCol?: any,
+  wrapperCol?: any,
 };
 
 function CustomInput(props: Props) {
@@ -29,10 +32,19 @@ function CustomInput(props: Props) {
     className,
     validatorMessage,
     values,
+    horizontalLayout,
+    labelCol,
+    wrapperCol,
   } = props;
+  const layout = horizontalLayout
+    ? {
+      labelCol: labelCol || { span: 10, style: { textAlign: 'left' } },
+      wrapperCol: wrapperCol || { span: 14 },
+    }
+    : {};
   const crules = [{ required, message: validatorMessage }];
   return (
-    <FormItem label={label}>
+    <FormItem {...layout} label={label}>
       {!getFieldDecorator ||
         getFieldDecorator(name, {
           rules: crules,
