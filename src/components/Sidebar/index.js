@@ -46,14 +46,6 @@ class Sidebar extends React.Component {
               <span>Patients</span>
             </a>
           </Menu.Item>
-          <Menu.Item key="dashboard.inventory">
-            <a href="/dashboard/inventory">
-              <Icon>
-                <icon className="ion-clipboard" />
-              </Icon>
-              <span>Inventory</span>
-            </a>
-          </Menu.Item>
           <Menu.Item key="dashboard.ipdmanage">
             <a href="/dashboard/ipd">
               <Icon>
@@ -62,6 +54,15 @@ class Sidebar extends React.Component {
               <span>IPD Manage</span>
             </a>
           </Menu.Item>
+          {/* <Menu.Item key="dashboard.inventory">
+            <a href="/dashboard/inventory">
+              <Icon>
+                <icon className="ion-clipboard" />
+              </Icon>
+              <span>Inventory</span>
+            </a>
+          </Menu.Item> */}
+
           <Menu.Item key="dashboard.profile">
             <a href="/dashboard/profile">
               <Icon>

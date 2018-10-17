@@ -100,6 +100,7 @@ class AppointmentModal extends React.Component<Props> {
       mobile: val.mobile,
       bloodGroup: val.blood_group,
       dob: val.dob ? moment(val.dob) : null,
+      age: val.age ? parseInt(val.age) : null,
       gender: val.gender,
     });
   };
@@ -231,6 +232,7 @@ class AppointmentModal extends React.Component<Props> {
           <Col md={6}>
             <DOBInput
               dobValue={getFieldValue('dob')}
+              active={!!getFieldValue('dob') ? 'dob' : 'age'}
               setFields={setFields}
               getFieldDecorator={getFieldDecorator}
             />

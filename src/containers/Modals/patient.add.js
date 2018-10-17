@@ -79,10 +79,7 @@ class PatientModal extends React.Component<Props> {
           </Col>
           <Col md={8}>
             <Input
-              rules={{
-                type: 'string',
-                pattern: '^[789][0-9]{9}$',
-              }}
+              rules={Input.rules.mobile}
               validatorMessage="Phone Number is Incorrect"
               label="Phone (+91)"
               name="mobile"

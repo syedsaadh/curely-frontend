@@ -15,6 +15,7 @@ import AppointmentCancel from './appointment.cancel';
 import AppointmentDelete from './appointment.delete';
 import DrugCatalogAdd from './DrugCatalog/DrugCatalog.add';
 import PatientAdmit from './IPD/patient.admit';
+import PatientDischarge from './IPD/patient.discharge';
 import VisitAdd from './IPD/visit.add';
 import VisitEdit from './IPD/visit.edit';
 import ChartingAppointmentEdit from './Charting/charting.appointment.edit';
@@ -37,6 +38,7 @@ export {
   AppointmentDelete,
   DrugCatalogAdd,
   PatientAdmit,
+  PatientDischarge,
   VisitAdd,
   VisitEdit,
   ChartingAppointmentEdit,

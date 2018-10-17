@@ -43,9 +43,7 @@ class IPDManagePage extends React.Component<Props> {
     this.props.fetchByDept(obj.id);
   };
   onDischarge = (record) => {
-    this.props.discharge({
-      id: record.id,
-    });
+    this.props.openModal('PatientDischarge', { data: record });
   };
   columns = [
     {
@@ -155,7 +153,7 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = dispatch => ({
-  openModal: modalName => dispatch(openModal(modalName)),
+  openModal: (modalName, modalProps) => dispatch(openModal(modalName, modalProps)),
   fetchAllDepartments: () => dispatch(fetchAllDepartments()),
   fetchByDept: dept => dispatch(fetchByDept(dept)),
   selectDepartment: dept => dispatch(selectDepartment(dept)),
