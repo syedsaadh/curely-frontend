@@ -12,6 +12,7 @@ import Calendar from './Protected/calendar';
 import Components from './components';
 import Inventory from './Protected/inventory';
 import IPDManage from './Protected/ipdmanage';
+import Profile from './Protected/profile';
 
 export {
   BlankPage,
@@ -28,4 +29,5 @@ export {
   Inventory,
   DrugCatalog,
   IPDManage,
+  Profile
 };
