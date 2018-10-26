@@ -13,10 +13,11 @@ import Inventory from './Inventory/reducer';
 import DrugCatalog from './DrugCatalog/reducer';
 import IPDAdmission from './IPD.Admission/reducer';
 import IPDCharting from './IPD.Charting/reducer';
-
+import Profile from './Profile/reducer'
 const rootReducer = {
   App,
   Auth,
+  Profile,
   Departments,
   LabTests,
   Procedures,

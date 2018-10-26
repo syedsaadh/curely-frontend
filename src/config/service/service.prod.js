@@ -1,6 +1,9 @@
 const session = {
   baseUrl: 'http://127.0.0.1:8000/api',
 };
+const profile = {
+  baseUrl: 'http://127.0.0.1:8000/api',
+};
 const department = {
   baseUrl: 'http://127.0.0.1:8000/api',
 };
@@ -35,6 +38,7 @@ const inventory = {
   baseUrl: 'http://127.0.0.1:8000/api',
 };
 module.exports = {
+  profile,
   session,
   department,
   labtests,
